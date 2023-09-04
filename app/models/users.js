@@ -1,4 +1,16 @@
 const mongoose = require("mongoose");
+
+const locationSchema = mongoose.Schema({
+  type: {
+    type: String,
+    default: "Point"
+  },
+  coordinates: {
+    type: [Number],
+    default: [0, 0]
+  }
+});
+
 // authType   1=admin , 2= Academy, 3= Player
 const schema = mongoose.Schema(
   {
@@ -37,6 +49,10 @@ const schema = mongoose.Schema(
     },
     pincode: {
       type: String
+    },
+    location: {
+      type: locationSchema,
+      index: "2dsphere"
     },
     status: {
       type: Boolean,
