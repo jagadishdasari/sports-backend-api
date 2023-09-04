@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 app.use("/api/player", require("./app/routes/playerRoutes"));
 app.use("/api/academy", require("./app/routes/academyRoutes"));
 app.use("/api/admin", require("./app/routes/adminRoutes"));
+app.use("/api", require("./app/routes/commonRoutes"));
 
 app.use("/img", express.static(path.join(__dirname, "app/img")));
 
