@@ -4,10 +4,8 @@ let validator = {};
 
 validator.registerSchema = function(req, res, next) {
   let schema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
     mobile: Joi.number().required(),
-    authType: Joi.string().required()
+    authType: Joi.number().required()
   }).unknown();
 
   let validatedRes = schema.validate(req.body);

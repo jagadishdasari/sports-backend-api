@@ -18,15 +18,13 @@ const schema = mongoose.Schema(
       type: String
     },
     email: {
-      type: String,
-      required: true
+      type: String
     },
     password: {
       type: String
     },
     mobile: {
-      type: Number,
-      required: true
+      type: Number
     },
     authType: {
       type: Number,
