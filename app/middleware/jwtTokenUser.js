@@ -78,4 +78,27 @@ authChecker.player = async function(req, res, next) {
   }
 };
 
+authChecker.user = async function(req, res, next) {
+  try {
+    if (!req.header("Authorization")) throw 1500;
+    const token = req.header("Authorization");
+
+    let payload = await jwtService.verifyAccessToken(token);
+    req.user = payload;
+
+    let userExist = await DataServices.findOne(User, {
+      _id: utils.convertToObjectId(req.user.userId)
+    });
+
+    if (!userExist) throw 1002;
+
+    req.AuthId = userExist._id;
+    req.AuthType = userExist.authType;
+
+    next();
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
 module.exports = authChecker;
