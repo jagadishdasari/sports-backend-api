@@ -33,9 +33,6 @@ const schema = mongoose.Schema(
     image: {
       type: String
     },
-    academyName: {
-      type: String
-    },
     address: {
       type: String
     },
