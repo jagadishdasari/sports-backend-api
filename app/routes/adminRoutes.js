@@ -19,4 +19,26 @@ route.get("/merchantusers", verify.admin, adminController.getAllAcademies);
 // image upload routes
 route.post("/upload", uploadImage.single("image"), imageUpload.uploadfile);
 
+// Banner Routes
+route.post(
+  "/banner",
+  verify.admin,
+  validator.bannerSchema,
+  adminController.createBanners
+);
+route.get("/banner/:id", verify.admin, adminController.getBannerById);
+route.put("/banner/:id", verify.admin, adminController.updateBannerById);
+route.delete("/banner/:id", verify.admin, adminController.deleteBannerById);
+
+// category Routes
+route.post(
+  "/category",
+  verify.admin,
+  validator.categorySchema,
+  adminController.createBanners
+);
+route.get("/category/:id", verify.admin, adminController.getCategoryById);
+route.put("/category/:id", verify.admin, adminController.updateCategoryById);
+route.delete("/category/:id", verify.admin, adminController.deleteCategoryById);
+
 module.exports = route;

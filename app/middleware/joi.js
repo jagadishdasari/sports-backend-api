@@ -13,7 +13,8 @@ validator.registerSchema = function(req, res, next) {
     state: Joi.string().required(),
     pincode: Joi.number().required(),
     location: Joi.object().required(),
-    academyId: Joi.string()
+    academyId: Joi.string(),
+    academyName: Joi.string()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -67,6 +68,64 @@ validator.adminLoginSchema = function(req, res, next) {
   let schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.bannerSchema = function(req, res, next) {
+  let schema = Joi.object({
+    wBanner: Joi.string().required(),
+    mBanner: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.categorySchema = function(req, res, next) {
+  let schema = Joi.object({
+    sport: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.academyProfileSchema = function(req, res, next) {
+  let schema = Joi.object({
+    academyName: Joi.string().required(),
+    logo: Joi.string().required(),
+    academyImage: Joi.string().required(),
+    academyBanners: Joi.string().required(),
+    sportsCount: Joi.string().required(),
+    coachCount: Joi.string().required(),
+    videosUrl: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);

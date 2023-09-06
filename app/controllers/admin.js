@@ -1,12 +1,16 @@
-const users = require("../models/users");
+const Users = require("../models/users");
 const authJWt = require("../middleware/jwtHandler");
 const output = require("../output/index");
 const dataServices = require("../Services/DataServices");
 const utils = require("../utils/index");
+const Banners = require("../models/banners");
+const Categories = require("../models/categories");
 
-exports.adminRegister = async (req, res) => {
+let adminController = {};
+
+adminController.adminRegister = async (req, res) => {
   try {
-    const existingAccount = await dataServices.findOne(users, {
+    const existingAccount = await dataServices.findOne(Users, {
       email: req.body.email
     });
     if (existingAccount) {
@@ -19,17 +23,17 @@ exports.adminRegister = async (req, res) => {
       authType: 1,
       mobile: 9899889988
     };
-    await dataServices.insertOne(users, objToSave);
+    await dataServices.insertOne(Users, objToSave);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
 };
 
-exports.adminLogin = async (req, res) => {
+adminController.adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const admin = await dataServices.findOne(users, { email });
+    const admin = await dataServices.findOne(Users, { email });
     if (!admin) {
       throw 24;
     }
@@ -57,31 +61,31 @@ exports.adminLogin = async (req, res) => {
   }
 };
 
-exports.getUser = async (req, res) => {
+adminController.getUser = async (req, res) => {
   try {
     const userId = utils.convertToObjectId(req.AuthId);
-    const result = await dataServices.findOne(users, { _id: userId });
+    const result = await dataServices.findOne(Users, { _id: userId });
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
 };
 
-exports.profileUpdate = async (req, res) => {
+adminController.profileUpdate = async (req, res) => {
   try {
     const userId = utils.convertToObjectId(req.AuthId);
     const criteria = { _id: userId };
     const updateData = req.body;
-    await dataServices.updateData(users, criteria, updateData);
+    await dataServices.updateData(Users, criteria, updateData);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
 };
 
-exports.getAllUsers = async (req, res) => {
+adminController.getAllUsers = async (req, res) => {
   try {
-    const result = await dataServices.getData(users, { authType: 3 });
+    const result = await dataServices.getData(Users, { authType: 3 });
     if (result.length === 0) throw 25;
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
@@ -89,9 +93,9 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getAllAcademies = async (req, res) => {
+adminController.getAllAcademies = async (req, res) => {
   try {
-    const result = await dataServices.getData(users, {
+    const result = await dataServices.getData(Users, {
       authType: 2
     });
     if (result.length === 0) throw 25;
@@ -100,3 +104,117 @@ exports.getAllAcademies = async (req, res) => {
     return output.makeErrorResponse(res, error);
   }
 };
+
+adminController.createBanners = async (req, res) => {
+  try {
+    let data = req.body;
+
+    await dataServices.insertOne(Banners, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getBanners = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Banners);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getBannerById = async (req, res) => {
+  try {
+    const bannerId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: bannerId };
+    const banner = await dataServices.findOne(Banners, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, banner);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updateBannerById = async (req, res) => {
+  try {
+    const bannerId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: bannerId };
+    const updateData = { ...req.body };
+    await dataServices.updateData(Banners, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deleteBannerById = async (req, res) => {
+  try {
+    const bannerId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: bannerId };
+    await dataServices.deleteOne(Banners, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.createCategory = async (req, res) => {
+  try {
+    let data = req.body;
+
+    await dataServices.insertOne(Categories, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getCategories = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Categories, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getCategoryById = async (req, res) => {
+  try {
+    const categoryId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: categoryId };
+    const result = await dataServices.findOne(Categories, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updateCategoryById = async (req, res) => {
+  try {
+    const categoryId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: categoryId };
+    const updateData = { ...req.body };
+    await dataServices.updateData(Categories, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deleteCategoryById = async (req, res) => {
+  try {
+    const categoryId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: categoryId };
+    await dataServices.deleteOne(Categories, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+module.exports = adminController;

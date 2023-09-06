@@ -14,4 +14,6 @@ route.get("/profile", verify.user, userController.getUser);
 // image upload routes
 route.post("/upload", uploadImage.single("image"), imageUpload.uploadfile);
 
+route.get("/getAcademys", userController.getAcademys);
+
 module.exports = route;

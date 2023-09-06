@@ -30,6 +30,10 @@ const schema = mongoose.Schema(
       type: Number,
       required: true
     },
+    academyName: {
+      type: String,
+      required: true
+    },
     image: {
       type: String
     },
@@ -49,9 +53,13 @@ const schema = mongoose.Schema(
       type: locationSchema,
       index: "2dsphere"
     },
-    status: {
+    isApproved: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    isSubscribed: {
+      type: Boolean,
+      default: false
     }
   },
   {
