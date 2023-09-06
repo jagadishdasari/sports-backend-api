@@ -5,7 +5,7 @@ const validator = require("../middleware/joi");
 const academyController = require("../controllers/academyController");
 
 route.post(
-  "/",
+  "/createProfile",
   verify.academy,
   validator.academyProfileSchema,
   academyController.createProfile

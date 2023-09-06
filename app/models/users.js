@@ -31,8 +31,7 @@ const schema = mongoose.Schema(
       required: true
     },
     academyName: {
-      type: String,
-      required: true
+      type: String
     },
     image: {
       type: String
