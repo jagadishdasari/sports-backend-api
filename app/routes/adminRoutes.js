@@ -26,6 +26,7 @@ route.post(
   validator.bannerSchema,
   adminController.createBanners
 );
+route.get("/banners", verify.admin, adminController.getBanners);
 route.get("/banner/:id", verify.admin, adminController.getBannerById);
 route.put("/banner/:id", verify.admin, adminController.updateBannerById);
 route.delete("/banner/:id", verify.admin, adminController.deleteBannerById);
