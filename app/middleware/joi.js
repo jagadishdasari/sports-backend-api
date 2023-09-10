@@ -12,7 +12,7 @@ validator.registerSchema = function(req, res, next) {
     state: Joi.string().required(),
     pincode: Joi.number().required(),
     location: Joi.object().required(),
-    academyId: Joi.string(),
+    academyId: Joi.string().allow(null),
     academyName: Joi.string().allow(null),
     name: Joi.string()
   });
