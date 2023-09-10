@@ -18,4 +18,6 @@ route.get("/getAcademys", userController.getAcademys);
 
 route.get("/getApprovedUpdates", userController.getApprovedUpdates);
 
+route.get("/getSports", userController.getSports);
+
 module.exports = route;
