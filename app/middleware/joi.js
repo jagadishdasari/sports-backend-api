@@ -4,7 +4,6 @@ let validator = {};
 
 validator.registerSchema = function(req, res, next) {
   let schema = Joi.object({
-    name: Joi.string().required(),
     email: Joi.string().min(3).required().email(),
     mobile: Joi.number().required(),
     authType: Joi.number().required(),
@@ -14,7 +13,8 @@ validator.registerSchema = function(req, res, next) {
     pincode: Joi.number().required(),
     location: Joi.object().required(),
     academyId: Joi.string(),
-    academyName: Joi.string()
+    academyName: Joi.string().null(),
+    name: Joi.string()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -120,12 +120,13 @@ validator.categorySchema = function(req, res, next) {
 validator.academyProfileSchema = function(req, res, next) {
   let schema = Joi.object({
     academyName: Joi.string().required(),
+    about: Joi.string().required(),
     logo: Joi.string().required(),
     academyImage: Joi.string().required(),
-    academyBanners: Joi.string().required(),
+    academyBanners: Joi.array().required(),
     sportsCount: Joi.string().required(),
     coachCount: Joi.string().required(),
-    videosUrl: Joi.string().required()
+    videosUrl: Joi.array().required()
   });
 
   let validatedRes = schema.validate(req.body);

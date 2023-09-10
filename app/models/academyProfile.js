@@ -7,6 +7,10 @@ const schema = mongoose.Schema(
       ref: "users",
       required: true
     },
+    about: {
+      type: mongoose.Types.ObjectId,
+      required: true
+    },
     logo: {
       type: String,
       required: true
