@@ -4,11 +4,10 @@ const schema = mongoose.Schema(
   {
     academyId: {
       type: mongoose.Types.ObjectId,
-      ref: "users",
-      required: true
+      ref: "users"
     },
     about: {
-      type: mongoose.Types.ObjectId,
+      type: String,
       required: true
     },
     logo: {

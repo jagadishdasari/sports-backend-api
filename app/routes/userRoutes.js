@@ -16,4 +16,6 @@ route.post("/upload", uploadImage.single("image"), imageUpload.uploadfile);
 
 route.get("/getAcademys", userController.getAcademys);
 
+route.get("/getApprovedUpdates", userController.getApprovedUpdates);
+
 module.exports = route;

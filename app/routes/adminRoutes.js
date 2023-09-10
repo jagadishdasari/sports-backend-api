@@ -36,10 +36,15 @@ route.post(
   "/category",
   verify.admin,
   validator.categorySchema,
-  adminController.createBanners
+  adminController.createCategory
 );
+route.get("/category", verify.admin, adminController.getCategories);
 route.get("/category/:id", verify.admin, adminController.getCategoryById);
 route.put("/category/:id", verify.admin, adminController.updateCategoryById);
 route.delete("/category/:id", verify.admin, adminController.deleteCategoryById);
+
+// update routes
+route.get("/getUpdates", verify.admin, adminController.getUpdates);
+route.post("/approveUpdate/:id", verify.admin, adminController.approveUpdates);
 
 module.exports = route;

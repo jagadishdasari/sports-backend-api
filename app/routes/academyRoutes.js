@@ -11,4 +11,11 @@ route.post(
   academyController.createProfile
 );
 
+route.post(
+  "/createUpdate",
+  verify.academy,
+  validator.notificationSchema,
+  academyController.createUpdate
+);
+
 module.exports = route;

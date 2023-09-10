@@ -4,6 +4,7 @@ const output = require("../output/index");
 const dataServices = require("../Services/DataServices");
 const utils = require("../utils/index");
 const AcademyPlayers = require("../models/academyPlayers");
+const Update = require("../models/updates");
 
 let userController = {};
 
@@ -102,6 +103,15 @@ userController.getAcademys = async (req, res) => {
       { authType: 2 },
       { academyName: 1 }
     );
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getApprovedUpdates = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Update, { isApproved: true });
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);

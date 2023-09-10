@@ -5,6 +5,7 @@ const dataServices = require("../Services/DataServices");
 const utils = require("../utils/index");
 const Banners = require("../models/banners");
 const Categories = require("../models/categories");
+const Update = require("../models/updates");
 
 let adminController = {};
 
@@ -175,7 +176,7 @@ adminController.createCategory = async (req, res) => {
 
 adminController.getCategories = async (req, res) => {
   try {
-    const result = await dataServices.getData(Categories, data);
+    const result = await dataServices.getData(Categories);
 
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
@@ -211,6 +212,29 @@ adminController.deleteCategoryById = async (req, res) => {
     const categoryId = utils.convertToObjectId(req.params.id);
     const criteria = { _id: categoryId };
     await dataServices.deleteOne(Categories, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getUpdates = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Update);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.approveUpdates = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const updateData = { isApproved: true };
+
+    await dataServices.updateData(Update, criteria, updateData);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);
