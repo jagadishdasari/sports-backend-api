@@ -24,6 +24,7 @@ error[22] = "Product Already Exists";
 error[23] = "Email Already Exists";
 error[24] = "This Email is not registered with us.";
 error[25] = "No Records Found.";
+error[26] = "Already Profile Exists. Please Edit Profile";
 
 error[1000] = "is required";
 error[1001] =

@@ -12,7 +12,11 @@ let academyController = {};
 academyController.createProfile = async (req, res) => {
   try {
     let data = req.body;
-    data.academyId = req.AuthId;
+    data.academyId = utils.convertToObjectId(req.AuthId);
+
+    const checkProfile = await DataServices.findOne(AcademyProfile, {
+      academyId: data.academyId
+    });
 
     const result = await dataServices.insertOne(AcademyProfile, data);
     return output.makeSuccessResponseWithMessage(res, 6, 200, result);
