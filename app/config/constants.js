@@ -9,8 +9,8 @@ const globalConstants = {
     privateKey: "c3f42e68-b461-4bc1-ae2c-da9f27ee3a20",
     tokenExpiry: 24 //1 DAY
   },
-  BASE_URL_LOCAL: "http://localhost:3000/",
-  BASE_URL_DEV: "http://localhost:3000/",
+  BASE_URL_LOCAL: "http://16.170.162.43/",
+  BASE_URL_DEV: "http://16.170.162.43/",
   BASE_URL_STG: "",
 
   MONGODB: {

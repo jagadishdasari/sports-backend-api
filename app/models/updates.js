@@ -6,10 +6,6 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
-    sportName: {
-      type: String,
-      required: true
-    },
     title: {
       type: String,
       required: true
