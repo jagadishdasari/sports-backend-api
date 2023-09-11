@@ -127,7 +127,8 @@ validator.academyProfileSchema = function(req, res, next) {
     sportsCount: Joi.number().required(),
     successRate: Joi.number().required(),
     students: Joi.number().required(),
-    coachCount: Joi.number().required()
+    coachCount: Joi.number().required(),
+    sports: Joi.array().required()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -147,6 +148,26 @@ validator.notificationSchema = function(req, res, next) {
     sportId: Joi.string().required(),
     title: Joi.string().required(),
     image: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.contactSchema = function(req, res, next) {
+  let schema = Joi.object({
+    fullName: Joi.string().required(),
+    email: Joi.string().required(),
+    subject: Joi.string().required(),
+    message: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);

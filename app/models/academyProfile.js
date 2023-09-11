@@ -29,7 +29,13 @@ const schema = mongoose.Schema(
     },
     students: {
       type: Number
-    }
+    },
+    sports: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "categories"
+      }
+    ]
   },
   {
     timestamps: true

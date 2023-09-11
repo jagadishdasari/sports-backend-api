@@ -23,4 +23,6 @@ route.get("/getSports", userController.getSports);
 
 route.get("/getBanners", adminController.getBanners);
 
+route.post("/contact", validator.contactSchema, userController.postContactForm);
+
 module.exports = route;

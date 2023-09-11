@@ -6,6 +6,7 @@ const utils = require("../utils/index");
 const Banners = require("../models/banners");
 const Categories = require("../models/categories");
 const Update = require("../models/updates");
+const ContactUs = require("../models/contactus");
 
 let adminController = {};
 
@@ -236,6 +237,15 @@ adminController.approveUpdates = async (req, res) => {
 
     await dataServices.updateData(Update, criteria, updateData);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getContactForms = async (req, res) => {
+  try {
+    const result = await dataServices.getData(ContactUs);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }

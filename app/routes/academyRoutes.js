@@ -32,4 +32,26 @@ route.post(
   academyController.uploadVideos
 );
 
+route.get("/getVideos", verify.academy, academyController.getUploadVideos);
+
+route.get("/getBanners", verify.academy, academyController.getUploadBanners);
+
+route.get(
+  "/getAcademyProfile",
+  verify.academy,
+  academyController.getCreatedProfile
+);
+
+route.delete(
+  "/deleteBannerById/:id",
+  verify.academy,
+  academyController.deleteBannersById
+);
+
+route.delete(
+  "/deleteVideoById/:id",
+  verify.academy,
+  academyController.deleteVideosById
+);
+
 module.exports = route;

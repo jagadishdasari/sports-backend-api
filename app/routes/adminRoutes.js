@@ -47,4 +47,7 @@ route.delete("/category/:id", verify.admin, adminController.deleteCategoryById);
 route.get("/getUpdates", verify.admin, adminController.getUpdates);
 route.post("/approveUpdate/:id", verify.admin, adminController.approveUpdates);
 
+// contact routes
+route.get("/getContactDetails", verify.admin, adminController.getContactForms);
+
 module.exports = route;
