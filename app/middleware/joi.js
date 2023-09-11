@@ -124,10 +124,10 @@ validator.academyProfileSchema = function(req, res, next) {
     about: Joi.string().required(),
     logo: Joi.string().required(),
     academyImage: Joi.string().required(),
-    academyBanners: Joi.array().required(),
     sportsCount: Joi.number().required(),
-    coachCount: Joi.number().required(),
-    videosUrl: Joi.array().required()
+    successRate: Joi.number().required(),
+    students: Joi.number().required(),
+    coachCount: Joi.number().required()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -147,6 +147,40 @@ validator.notificationSchema = function(req, res, next) {
     sportId: Joi.string().required(),
     title: Joi.string().required(),
     image: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.uploadBannerSchema = function(req, res, next) {
+  let schema = Joi.object({
+    image: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+validator.uploadVideoSchema = function(req, res, next) {
+  let schema = Joi.object({
+    image: Joi.string().required(),
+    url: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);

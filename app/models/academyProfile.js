@@ -18,14 +18,18 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
-    academyBanners: [],
     sportsCount: {
       type: Number
     },
     coachCount: {
       type: Number
     },
-    videosUrl: []
+    successRate: {
+      type: Number
+    },
+    students: {
+      type: Number
+    }
   },
   {
     timestamps: true

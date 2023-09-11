@@ -18,4 +18,18 @@ route.post(
   academyController.createUpdate
 );
 
+route.post(
+  "/createBanners",
+  verify.academy,
+  validator.uploadBannerSchema,
+  academyController.uploadBanners
+);
+
+route.post(
+  "/createVideos",
+  verify.academy,
+  validator.uploadVideoSchema,
+  academyController.uploadVideos
+);
+
 module.exports = route;
