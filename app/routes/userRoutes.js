@@ -5,6 +5,7 @@ const uploadImage = require("../controllers/upload");
 const imageUpload = require("../controllers/imageUploads");
 const validator = require("../middleware/joi");
 const userController = require("../controllers/users");
+const adminController = require("../controllers/admin");
 
 route.post("/register", validator.registerSchema, userController.register);
 route.post("/login", validator.loginSchema, userController.login);
@@ -19,5 +20,7 @@ route.get("/getAcademys", userController.getAcademys);
 route.get("/getApprovedUpdates", userController.getApprovedUpdates);
 
 route.get("/getSports", userController.getSports);
+
+route.get("/getBanners", adminController.getBanners);
 
 module.exports = route;
