@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema(
   {
     sportId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "categories",
       required: true
     },
     title: {

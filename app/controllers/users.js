@@ -112,7 +112,20 @@ userController.getAcademys = async (req, res) => {
 
 userController.getApprovedUpdates = async (req, res) => {
   try {
-    const result = await dataServices.getData(Update, { isApproved: true });
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { isApproved: true } },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "sportId",
+          foreignField: "_id",
+          as: "sportData"
+        }
+      }
+    );
+    const result = await dataServices.dataAggregation(Update, pipeline);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
