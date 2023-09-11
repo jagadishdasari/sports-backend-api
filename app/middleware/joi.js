@@ -146,6 +146,7 @@ validator.notificationSchema = function(req, res, next) {
   let schema = Joi.object({
     sportId: Joi.string().required(),
     sportName: Joi.string().required(),
+    title: Joi.string().required(),
     image: Joi.string().required()
   });
 
