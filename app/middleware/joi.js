@@ -120,7 +120,6 @@ validator.categorySchema = function(req, res, next) {
 
 validator.academyProfileSchema = function(req, res, next) {
   let schema = Joi.object({
-    academyId: Joi.string().required(),
     about: Joi.string().required(),
     logo: Joi.string().required(),
     academyImage: Joi.string().required(),
