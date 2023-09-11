@@ -18,6 +18,8 @@ academyController.createProfile = async (req, res) => {
       academyId: data.academyId
     });
 
+    if (checkProfile) throw 26;
+
     const result = await dataServices.insertOne(AcademyProfile, data);
     return output.makeSuccessResponseWithMessage(res, 6, 200, result);
   } catch (error) {
