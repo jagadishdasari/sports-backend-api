@@ -197,10 +197,30 @@ validator.uploadBannerSchema = function(req, res, next) {
   }
   next();
 };
+
 validator.uploadVideoSchema = function(req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required(),
     url: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.getAcademySchema = function(req, res, next) {
+  let schema = Joi.object({
+    page: Joi.number().required(),
+    pageLimit: Joi.number().required(),
+    sportId: Joi.string()
   });
 
   let validatedRes = schema.validate(req.body);

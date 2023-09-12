@@ -23,6 +23,14 @@ route.get("/getSports", userController.getSports);
 
 route.get("/getBanners", adminController.getBanners);
 
+route.post(
+  "/getAcademyProfiles",
+  validator.getAcademySchema,
+  userController.getAcademyProfiles
+);
+
+route.get("/getAcademyProfileById/:id", userController.getAcademyProfileById);
+
 route.post("/contact", validator.contactSchema, userController.postContactForm);
 
 module.exports = route;

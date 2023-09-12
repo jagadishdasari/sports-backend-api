@@ -153,4 +153,95 @@ userController.postContactForm = async (req, res) => {
   }
 };
 
+userController.getAcademyProfiles = async (req, res) => {
+  try {
+    let data = req.body;
+
+    let pipeline = [
+      { $match: { authType: 2, isApproved: true } },
+      {
+        $lookup: {
+          from: "academyprofiles",
+          localField: "_id",
+          foreignField: "academyId",
+          as: "profileData"
+        }
+      },
+      {
+        $lookup: {
+          from: "academybanners",
+          localField: "_id",
+          foreignField: "academyId",
+          as: "bannersData"
+        }
+      },
+      {
+        $lookup: {
+          from: "academyvideos",
+          localField: "_id",
+          foreignField: "academyId",
+          as: "videosData"
+        }
+      }
+    ];
+
+    if (data.sportId) {
+      pipeline.push({
+        $match: { "profileData.sports": utils.convertToObjectId(data.sportId) }
+      });
+    }
+
+    let result = await dataServices.dataAggregationWithPagination(
+      Users,
+      pipeline,
+      data.page,
+      data.pageLimit
+    );
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getAcademyProfileById = async (req, res) => {
+  try {
+    const academyId = utils.convertToObjectId(req.params.id);
+
+    let pipeline = [
+      { $match: { _id: academyId } },
+      {
+        $lookup: {
+          from: "academyprofiles",
+          localField: "_id",
+          foreignField: "academyId",
+          as: "profileDta"
+        }
+      },
+      {
+        $lookup: {
+          from: "academybanners",
+          localField: "_id",
+          foreignField: "academyId",
+          as: "bannersData"
+        }
+      },
+      {
+        $lookup: {
+          from: "academyvideos",
+          localField: "_id",
+          foreignField: "academyId",
+          as: "videosData"
+        }
+      }
+    ];
+
+    let result = await dataServices.dataAggregation(Users, pipeline);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
 module.exports = userController;
