@@ -35,6 +35,6 @@ route.post("/contact", validator.contactSchema, userController.postContactForm);
 
 route.get("/testimonials", userController.getTestimonials);
 
-route.post("/partners", userController.getPartners);
+route.get("/partners", userController.getPartners);
 
 module.exports = route;
