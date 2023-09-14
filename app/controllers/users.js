@@ -7,6 +7,8 @@ const AcademyPlayers = require("../models/academyPlayers");
 const Update = require("../models/updates");
 const Category = require("../models/categories");
 const ContactUs = require("../models/contactus");
+const Testimonials = require("../models/testimonials");
+const Partners = require("../models/partners");
 
 let userController = {};
 
@@ -136,6 +138,24 @@ userController.getApprovedUpdates = async (req, res) => {
 userController.getSports = async (req, res) => {
   try {
     const result = await dataServices.getData(Category);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getTestimonials = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Testimonials);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getPartners = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Partners);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);

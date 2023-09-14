@@ -50,4 +50,40 @@ route.post("/approveUpdate/:id", verify.admin, adminController.approveUpdates);
 // contact routes
 route.get("/getContactDetails", verify.admin, adminController.getContactForms);
 
+// testimonials routes
+route.post(
+  "/testimonial",
+  verify.admin,
+  validator.testimonialSchema,
+  adminController.createTestimonials
+);
+route.get("/testimonials", verify.admin, adminController.getTestimonials);
+route.get(
+  "/testimonial/:id",
+  verify.admin,
+  adminController.getTestimonialsById
+);
+route.put(
+  "/testimonial/:id",
+  verify.admin,
+  adminController.updateTestimonialById
+);
+route.delete(
+  "/testimonial/:id",
+  verify.admin,
+  adminController.deleteTestimonialById
+);
+
+// partners routes
+route.post(
+  "/partner",
+  verify.admin,
+  validator.partnerSchema,
+  adminController.createPartners
+);
+route.get("/partners", verify.admin, adminController.getPartners);
+route.get("/partner/:id", verify.admin, adminController.getPartnerById);
+route.put("/partner/:id", verify.admin, adminController.updatePartnerById);
+route.delete("/partner/:id", verify.admin, adminController.deletePartnerById);
+
 module.exports = route;

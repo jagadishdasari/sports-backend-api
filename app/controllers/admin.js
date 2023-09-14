@@ -7,6 +7,8 @@ const Banners = require("../models/banners");
 const Categories = require("../models/categories");
 const Update = require("../models/updates");
 const ContactUs = require("../models/contactus");
+const Testimonials = require("../models/testimonials");
+const Partners = require("../models/partners");
 
 let adminController = {};
 
@@ -246,6 +248,118 @@ adminController.getContactForms = async (req, res) => {
   try {
     const result = await dataServices.getData(ContactUs);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.createTestimonials = async (req, res) => {
+  try {
+    let data = req.body;
+
+    await dataServices.insertOne(Testimonials, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getTestimonials = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Testimonials);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getTestimonialsById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const result = await dataServices.findOne(Testimonials, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updateTestimonialById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const updateData = { ...req.body };
+    await dataServices.updateData(Testimonials, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deleteTestimonialById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    await dataServices.deleteOne(Testimonials, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.createPartners = async (req, res) => {
+  try {
+    let data = req.body;
+
+    await dataServices.insertOne(Partners, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getPartners = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Partners);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getPartnerById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const result = await dataServices.findOne(Partners, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updatePartnerById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const updateData = { ...req.body };
+    await dataServices.updateData(Partners, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deletePartnerById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    await dataServices.deleteOne(Partners, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }

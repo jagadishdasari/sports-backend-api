@@ -33,4 +33,8 @@ route.get("/getAcademyProfileById/:id", userController.getAcademyProfileById);
 
 route.post("/contact", validator.contactSchema, userController.postContactForm);
 
+route.get("/testimonials", userController.getTestimonials);
+
+route.post("/partners", userController.getPartners);
+
 module.exports = route;

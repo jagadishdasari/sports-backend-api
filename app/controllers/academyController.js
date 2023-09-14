@@ -6,6 +6,7 @@ const Update = require("../models/updates");
 const DataServices = require("../Services/DataServices");
 const AcademyBanners = require("../models/academyBanners");
 const AcademyVideos = require("../models/academyVideos");
+const Testimonials = require("../models/testimonials");
 
 let academyController = {};
 

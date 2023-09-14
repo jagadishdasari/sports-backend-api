@@ -118,6 +118,42 @@ validator.categorySchema = function(req, res, next) {
   next();
 };
 
+validator.testimonialSchema = function(req, res, next) {
+  let schema = Joi.object({
+    name: Joi.string().required(),
+    image: Joi.string().required(),
+    comment: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.partnerSchema = function(req, res, next) {
+  let schema = Joi.object({
+    image: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
 validator.academyProfileSchema = function(req, res, next) {
   let schema = Joi.object({
     about: Joi.string().required(),
