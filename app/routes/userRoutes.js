@@ -29,7 +29,15 @@ route.post(
   userController.getAcademyProfiles
 );
 
+route.post(
+  "/getPlayerProfiles",
+  validator.getAcademySchema,
+  userController.getPlayerProfiles
+);
+
 route.get("/getAcademyProfileById/:id", userController.getAcademyProfileById);
+
+route.get("/getPlayerProfileById/:id", userController.getPlayerProfileById);
 
 route.post("/contact", validator.contactSchema, userController.postContactForm);
 

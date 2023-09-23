@@ -58,9 +58,10 @@ userController.login = async (req, res) => {
   try {
     const { mobile } = req.body;
     const user = await dataServices.findOne(Users, { mobile });
-    if (!user) {
-      throw 12;
-    }
+
+    if (!user) throw 12;
+    if (user.isApproved === false) throw 27;
+
     const userObject = {
       id: user._id,
       authType: user.authType
@@ -252,6 +253,75 @@ userController.getAcademyProfileById = async (req, res) => {
           localField: "_id",
           foreignField: "academyId",
           as: "videosData"
+        }
+      }
+    ];
+
+    let result = await dataServices.dataAggregation(Users, pipeline);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getPlayerProfiles = async (req, res) => {
+  try {
+    let data = req.body;
+
+    let pipeline = [
+      { $match: { authType: 3, isApproved: true } },
+      {
+        $lookup: {
+          from: "playerprofiles",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "profileDta"
+        }
+      }
+    ];
+
+    let result = await dataServices.dataAggregationWithPagination(
+      Users,
+      pipeline,
+      data.page,
+      data.pageLimit
+    );
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getPlayerProfileById = async (req, res) => {
+  try {
+    const ID = utils.convertToObjectId(req.params.id);
+
+    let pipeline = [
+      { $match: { _id: ID } },
+      {
+        $lookup: {
+          from: "playerprofiles",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "profileDta"
+        }
+      },
+      {
+        $lookup: {
+          from: "playervideos",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "videosData"
+        }
+      },
+      {
+        $lookup: {
+          from: "playerachivements",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "AchivementsData"
         }
       }
     ];

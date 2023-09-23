@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
   {
-    academyId: {
+    playerId: {
       type: mongoose.Types.ObjectId,
       required: true
     },
@@ -10,13 +10,15 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
-    title: {
+    description: {
       type: String,
       required: true
     },
-    url: {
-      type: String,
-      required: true
+    date: {
+      type: String
+    },
+    author: {
+      type: String
     }
   },
   {
@@ -24,5 +26,5 @@ const schema = mongoose.Schema(
   }
 );
 
-const AcademyVideos = mongoose.model("academyvideos", schema);
-module.exports = AcademyVideos;
+const PlayerAchivements = mongoose.model("playerachivements", schema);
+module.exports = PlayerAchivements;

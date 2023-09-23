@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
   {
-    wBanner: {
+    image: {
       type: String,
       required: true
     }
@@ -12,5 +12,5 @@ const schema = mongoose.Schema(
   }
 );
 
-const Banners = mongoose.model("banners", schema);
-module.exports = Banners;
+const splashScreens = mongoose.model("splashscreen", schema);
+module.exports = splashScreens;

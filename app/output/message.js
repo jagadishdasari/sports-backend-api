@@ -25,6 +25,7 @@ error[23] = "Email Already Exists";
 error[24] = "This Email is not registered with us.";
 error[25] = "No Records Found.";
 error[26] = "Already Profile Exists. Please Edit Profile";
+error[27] = "Approval is Pending. Please wait for 24 Hrs";
 
 error[1000] = "is required";
 error[1001] =

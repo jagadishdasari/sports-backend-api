@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema(
   {
-    academyId: {
+    playerId: {
       type: mongoose.Types.ObjectId,
       required: true
     },
@@ -10,11 +10,11 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
-    title: {
+    url: {
       type: String,
       required: true
     },
-    url: {
+    title: {
       type: String,
       required: true
     }
@@ -24,5 +24,5 @@ const schema = mongoose.Schema(
   }
 );
 
-const AcademyVideos = mongoose.model("academyvideos", schema);
-module.exports = AcademyVideos;
+const PlayerVideos = mongoose.model("playervideos", schema);
+module.exports = PlayerVideos;

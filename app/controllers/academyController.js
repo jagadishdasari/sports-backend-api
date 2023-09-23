@@ -6,7 +6,6 @@ const Update = require("../models/updates");
 const DataServices = require("../Services/DataServices");
 const AcademyBanners = require("../models/academyBanners");
 const AcademyVideos = require("../models/academyVideos");
-const Testimonials = require("../models/testimonials");
 
 let academyController = {};
 
@@ -19,10 +18,28 @@ academyController.createProfile = async (req, res) => {
       academyId: data.academyId
     });
 
-    if (checkProfile) throw 26;
+    if (checkProfile) throw 22;
 
     const result = await dataServices.insertOne(AcademyProfile, data);
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+academyController.updateProfile = async (req, res) => {
+  try {
+    let data = req.body;
+    data.academyId = utils.convertToObjectId(req.AuthId);
+
+    const criteria = { academyId: data.academyId };
+
+    const result = await dataServices.updateData(
+      AcademyProfile,
+      criteria,
+      data
+    );
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -33,7 +50,7 @@ academyController.createUpdate = async (req, res) => {
     let data = req.body;
 
     const result = await DataServices.createData(Update, data);
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -45,7 +62,7 @@ academyController.uploadBanners = async (req, res) => {
     data.academyId = req.AuthId;
 
     const result = await DataServices.createData(AcademyBanners, data);
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -57,7 +74,7 @@ academyController.uploadVideos = async (req, res) => {
     data.academyId = req.AuthId;
 
     const result = await DataServices.createData(AcademyVideos, data);
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -70,7 +87,7 @@ academyController.getUploadBanners = async (req, res) => {
     const result = await DataServices.getData(AcademyBanners, {
       academyId: userID
     });
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -83,7 +100,7 @@ academyController.getUploadVideos = async (req, res) => {
     const result = await DataServices.getData(AcademyVideos, {
       academyId: userID
     });
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -96,7 +113,7 @@ academyController.getCreatedProfile = async (req, res) => {
     const result = await DataServices.getData(AcademyProfile, {
       academyId: userID
     });
-    return output.makeSuccessResponseWithMessage(res, 6, 200, result);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }

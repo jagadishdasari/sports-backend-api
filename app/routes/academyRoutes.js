@@ -11,6 +11,13 @@ route.post(
   academyController.createProfile
 );
 
+route.put(
+  "/updateProfile",
+  verify.academy,
+  validator.academyProfileSchema,
+  academyController.updateProfile
+);
+
 route.post(
   "/createUpdate",
   verify.academy,

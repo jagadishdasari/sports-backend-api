@@ -45,7 +45,12 @@ route.delete("/category/:id", verify.admin, adminController.deleteCategoryById);
 
 // update routes
 route.get("/getUpdates", verify.admin, adminController.getUpdates);
-route.post("/approveUpdate/:id", verify.admin, adminController.approveUpdates);
+route.post(
+  "/approveUpdate/:id",
+  verify.admin,
+  validator.approveUpdatesSchema,
+  adminController.approveUpdates
+);
 
 // contact routes
 route.get("/getContactDetails", verify.admin, adminController.getContactForms);
@@ -85,5 +90,37 @@ route.get("/partners", verify.admin, adminController.getPartners);
 route.get("/partner/:id", verify.admin, adminController.getPartnerById);
 route.put("/partner/:id", verify.admin, adminController.updatePartnerById);
 route.delete("/partner/:id", verify.admin, adminController.deletePartnerById);
+
+// SplashScreen Routes
+route.post(
+  "/splashscreen",
+  verify.admin,
+  validator.partnerSchema,
+  adminController.createSplashScreen
+);
+route.get("/splashscreens", verify.admin, adminController.getSplashScreens);
+route.get(
+  "/splashscreen/:id",
+  verify.admin,
+  adminController.getSplashScreenById
+);
+route.put(
+  "/splashscreen/:id",
+  verify.admin,
+  adminController.updateSplashScreenById
+);
+route.delete(
+  "/splashscreen/:id",
+  verify.admin,
+  adminController.deleteSplashScreenById
+);
+
+// update profiles
+route.put(
+  "/updateAcademyProfile",
+  verify.admin,
+  validator.updateStatus,
+  adminController.updateAcademyProfileStatus
+);
 
 module.exports = route;

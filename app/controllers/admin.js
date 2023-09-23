@@ -9,6 +9,8 @@ const Update = require("../models/updates");
 const ContactUs = require("../models/contactus");
 const Testimonials = require("../models/testimonials");
 const Partners = require("../models/partners");
+const SplashScreen = require("../models/splashScreen");
+const DataServices = require("../Services/DataServices");
 
 let adminController = {};
 
@@ -233,11 +235,11 @@ adminController.getUpdates = async (req, res) => {
 
 adminController.approveUpdates = async (req, res) => {
   try {
+    let data = req.body;
     const Id = utils.convertToObjectId(req.params.id);
     const criteria = { _id: Id };
-    const updateData = { isApproved: true };
 
-    await dataServices.updateData(Update, criteria, updateData);
+    await dataServices.updateData(Update, criteria, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);
@@ -359,6 +361,76 @@ adminController.deletePartnerById = async (req, res) => {
     const Id = utils.convertToObjectId(req.params.id);
     const criteria = { _id: Id };
     await dataServices.deleteOne(Partners, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.createSplashScreen = async (req, res) => {
+  try {
+    let data = req.body;
+
+    await dataServices.insertOne(SplashScreen, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getSplashScreens = async (req, res) => {
+  try {
+    const result = await dataServices.getData(SplashScreen);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getSplashScreenById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const result = await dataServices.findOne(SplashScreen, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updateSplashScreenById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const updateData = { ...req.body };
+    await dataServices.updateData(SplashScreen, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deleteSplashScreenById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    await dataServices.deleteOne(SplashScreen, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updateAcademyProfileStatus = async (req, res) => {
+  try {
+    let data = req.body;
+    const ID = utils.convertToObjectId(data.id);
+
+    const criteria = { _id: ID };
+
+    await DataServices.updateData(Users, criteria, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);

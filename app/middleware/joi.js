@@ -84,8 +84,7 @@ validator.adminLoginSchema = function(req, res, next) {
 
 validator.bannerSchema = function(req, res, next) {
   let schema = Joi.object({
-    wBanner: Joi.string().required(),
-    mBanner: Joi.string().required()
+    wBanner: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -178,11 +177,45 @@ validator.academyProfileSchema = function(req, res, next) {
   next();
 };
 
+validator.playerProfileSchema = function(req, res, next) {
+  let schema = Joi.object({
+    about: Joi.string().required(),
+    profilePicture: Joi.string().required(),
+    game: Joi.string().required(),
+    playing: Joi.string().required(),
+    backgroundImage: Joi.string().required(),
+    carrierStartedAt: Joi.string().required(),
+    goal: Joi.string().required(),
+    reasonToChoosePart: Joi.string().required(),
+    requirementFromSponcers: Joi.string().required(),
+    age: Joi.number().required(),
+    schoolCount: Joi.number().required(),
+    tournmentsCount: Joi.number().required(),
+    universityCount: Joi.number().required(),
+    districtCount: Joi.number().required(),
+    nationalsCount: Joi.number().required(),
+    internationalsCount: Joi.number().required(),
+    socialMediaLinks: Joi.array().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
 validator.notificationSchema = function(req, res, next) {
   let schema = Joi.object({
     sportId: Joi.string().required(),
     title: Joi.string().required(),
-    image: Joi.string().required()
+    image: Joi.string().required(),
+    pdf: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -237,7 +270,28 @@ validator.uploadBannerSchema = function(req, res, next) {
 validator.uploadVideoSchema = function(req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required(),
-    url: Joi.string().required()
+    url: Joi.string().required(),
+    title: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.createAchivement = function(req, res, next) {
+  let schema = Joi.object({
+    image: Joi.string().required(),
+    description: Joi.string().required(),
+    date: Joi.string().required(),
+    author: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -258,6 +312,41 @@ validator.getAcademySchema = function(req, res, next) {
     pageLimit: Joi.number().required(),
     sportId: Joi.string()
   });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.updateStatus = function(req, res, next) {
+  let schema = Joi.object({
+    id: Joi.string().required(),
+    isApproved: Joi.boolean().required()
+  }).unknown();
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.approveUpdatesSchema = function(req, res, next) {
+  let schema = Joi.object({
+    isApproved: Joi.boolean().required()
+  }).unknown();
 
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
