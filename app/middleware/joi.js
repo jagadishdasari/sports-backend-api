@@ -198,6 +198,7 @@ validator.academyProfileSchema = function(req, res, next) {
 validator.playerProfileSchema = function(req, res, next) {
   let schema = Joi.object({
     about: Joi.string().required(),
+    aboutImage: Joi.string().required(),
     profilePicture: Joi.string().required(),
     game: Joi.string().required(),
     playing: Joi.string().required(),

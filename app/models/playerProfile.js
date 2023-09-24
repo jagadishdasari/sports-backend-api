@@ -10,6 +10,10 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
+    aboutImage: {
+      type: String,
+      required: true
+    },
     profilePicture: {
       type: String,
       required: true
