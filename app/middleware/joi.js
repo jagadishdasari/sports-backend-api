@@ -213,7 +213,10 @@ validator.playerProfileSchema = function(req, res, next) {
     districtCount: Joi.number().required(),
     nationalsCount: Joi.number().required(),
     internationalsCount: Joi.number().required(),
-    socialMediaLinks: Joi.array().required()
+    facebookLink: Joi.string().required(),
+    twitterLink: Joi.string().required(),
+    instagramLink: Joi.string().required(),
+    youtubeLink: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);

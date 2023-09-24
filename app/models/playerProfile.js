@@ -30,7 +30,18 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
-    socialMediaLinks: [],
+    facebookLink: {
+      type: String
+    },
+    twitterLink: {
+      type: String
+    },
+    instagramLink: {
+      type: String
+    },
+    youtubeLink: {
+      type: String
+    },
     carrierStartedAt: {
       type: String,
       required: true
