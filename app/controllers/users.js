@@ -48,6 +48,7 @@ userController.register = async (req, res) => {
       token: accessToken
     };
 
+    await utils.sendSms(newUser.mobile);
     return output.makeSuccessResponseWithMessage(res, 6, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
@@ -73,7 +74,22 @@ userController.login = async (req, res) => {
       authType: user.authType,
       token: token
     };
+    await utils.sendSms(user.mobile);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.verifyOtp = async (req, res) => {
+  try {
+    let data = req.body;
+    const result = await utils.verifyOtp(data);
+    if (result == "OTP verified success") {
+      return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+    } else {
+      return output.makeSuccessResponseWithMessage(res, 28, 400, result);
+    }
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
@@ -178,8 +194,21 @@ userController.getAcademyProfiles = async (req, res) => {
   try {
     let data = req.body;
 
+    const userLongitude = parseFloat(data.longitude);
+    const userLatitude = parseFloat(data.latitude);
+    const unitValue = 1;
+
     let pipeline = [
-      { $match: { authType: 2, isApproved: true } },
+      {
+        $geoNear: {
+          near: { type: "Point", coordinates: [userLongitude, userLatitude] },
+          distanceField: "distance",
+          distanceMultiplier: 1 / unitValue,
+          key: "location",
+          spherical: true,
+          query: { authType: 2, isApproved: true }
+        }
+      },
       {
         $lookup: {
           from: "academyprofiles",
@@ -202,6 +231,25 @@ userController.getAcademyProfiles = async (req, res) => {
           localField: "_id",
           foreignField: "academyId",
           as: "videosData"
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          email: 1,
+          mobile: 1,
+          authType: 1,
+          academyName: 1,
+          image: 1,
+          address: 1,
+          city: 1,
+          state: 1,
+          pincode: 1,
+          distance: { $round: ["$distance", 0] },
+          profileData: 1,
+          bannersData: 1,
+          videosData: 1
         }
       }
     ];

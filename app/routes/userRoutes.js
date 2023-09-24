@@ -9,6 +9,7 @@ const adminController = require("../controllers/admin");
 
 route.post("/register", validator.registerSchema, userController.register);
 route.post("/login", validator.loginSchema, userController.login);
+route.post("/verify", validator.verifySchema, userController.verifyOtp);
 route.put("/profileupdate", verify.user, userController.profileUpdate);
 route.get("/profile", verify.user, userController.getUser);
 

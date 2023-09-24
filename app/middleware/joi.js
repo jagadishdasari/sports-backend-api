@@ -64,6 +64,24 @@ validator.loginSchema = function(req, res, next) {
   next();
 };
 
+validator.verifySchema = function(req, res, next) {
+  let schema = Joi.object({
+    number: Joi.number().required(),
+    code: Joi.number().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map(detail => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
 validator.adminLoginSchema = function(req, res, next) {
   let schema = Joi.object({
     email: Joi.string().email().required(),
@@ -310,7 +328,9 @@ validator.getAcademySchema = function(req, res, next) {
   let schema = Joi.object({
     page: Joi.number().required(),
     pageLimit: Joi.number().required(),
-    sportId: Joi.string()
+    sportId: Joi.string(),
+    latitude: Joi.string(),
+    longitude: Joi.string()
   });
 
   let validatedRes = schema.validate(req.body);
