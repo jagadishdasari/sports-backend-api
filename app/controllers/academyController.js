@@ -2,10 +2,12 @@ const output = require("../output/index");
 const dataServices = require("../Services/DataServices");
 const utils = require("../utils/index");
 const AcademyProfile = require("../models/academyProfile");
+const Users = require("../models/users");
 const Update = require("../models/updates");
 const DataServices = require("../Services/DataServices");
 const AcademyBanners = require("../models/academyBanners");
 const AcademyVideos = require("../models/academyVideos");
+const AcademyPlayers = require("../models/academyPlayers");
 
 let academyController = {};
 
@@ -135,6 +137,103 @@ academyController.deleteBannersById = async (req, res) => {
     const Id = utils.convertToObjectId(req.params.id);
     const criteria = { _id: Id };
     await dataServices.deleteOne(AcademyBanners, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+academyController.getPlayers = async (req, res) => {
+  try {
+    let pipeline = [];
+    const ID = utils.convertToObjectId(req.AuthId);
+    const criteria = { academyId: ID };
+    const playerIds = await DataServices.findOne(AcademyPlayers, criteria);
+
+    pipeline.push(
+      { $match: { _id: { $in: playerIds.players } } },
+      {
+        $lookup: {
+          from: "playerprofiles",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "profileData"
+        }
+      },
+      {
+        $lookup: {
+          from: "playervideos",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "videosData"
+        }
+      },
+      {
+        $lookup: {
+          from: "playerachivements",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "AchivementsData"
+        }
+      }
+    );
+
+    const result = await DataServices.dataAggregation(Users, pipeline);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+academyController.getPlayerById = async (req, res) => {
+  try {
+    const userID = utils.convertToObjectId(req.params.id);
+
+    let pipeline = [
+      { $match: { _id: userID } },
+      {
+        $lookup: {
+          from: "playerprofiles",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "profileDta"
+        }
+      },
+      {
+        $lookup: {
+          from: "playervideos",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "videosData"
+        }
+      },
+      {
+        $lookup: {
+          from: "playerachivements",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "AchivementsData"
+        }
+      }
+    ];
+
+    let result = await DataServices.dataAggregation(Users, pipeline);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+academyController.approvePlayer = async (req, res) => {
+  try {
+    let data = req.body;
+    const ID = utils.convertToObjectId(data.id);
+
+    const criteria = { _id: ID };
+
+    await DataServices.updateData(Users, criteria, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);

@@ -61,4 +61,19 @@ route.delete(
   academyController.deleteVideosById
 );
 
+route.get("/getPlayers", verify.academy, academyController.getPlayers);
+
+route.get(
+  "/getPlayerById/:id",
+  verify.academy,
+  academyController.getPlayerById
+);
+
+route.put(
+  "/approvePlayer",
+  verify.academy,
+  validator.updateStatus,
+  academyController.approvePlayer
+);
+
 module.exports = route;
