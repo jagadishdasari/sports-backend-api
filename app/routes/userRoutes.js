@@ -46,4 +46,8 @@ route.get("/testimonials", userController.getTestimonials);
 
 route.get("/partners", userController.getPartners);
 
+route.get("/splashscreen", userController.getSplashScreens);
+
+route.get("/getPlayersByAcademyId/:id", userController.getPlayersByAcademyId);
+
 module.exports = route;

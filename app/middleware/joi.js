@@ -333,6 +333,7 @@ validator.getAcademySchema = function(req, res, next) {
     page: Joi.number().required(),
     pageLimit: Joi.number().required(),
     sportId: Joi.string(),
+    city: Joi.string(),
     latitude: Joi.string(),
     longitude: Joi.string()
   });

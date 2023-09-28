@@ -162,6 +162,15 @@ academyController.getPlayers = async (req, res) => {
       },
       {
         $lookup: {
+          from: "academyprofiles",
+          localField: "academyId",
+          foreignField: "academyId",
+          pipeline: [{ $project: { logo: 1, academyImage: 1, about: 1 } }],
+          as: "academyProfileData"
+        }
+      },
+      {
+        $lookup: {
           from: "playervideos",
           localField: "_id",
           foreignField: "playerId",
@@ -198,6 +207,15 @@ academyController.getPlayerById = async (req, res) => {
           localField: "_id",
           foreignField: "playerId",
           as: "profileDta"
+        }
+      },
+      {
+        $lookup: {
+          from: "academyprofiles",
+          localField: "academyId",
+          foreignField: "academyId",
+          pipeline: [{ $project: { logo: 1, academyImage: 1, about: 1 } }],
+          as: "academyProfileData"
         }
       },
       {

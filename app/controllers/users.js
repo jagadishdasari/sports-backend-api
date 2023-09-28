@@ -9,6 +9,7 @@ const Category = require("../models/categories");
 const ContactUs = require("../models/contactus");
 const Testimonials = require("../models/testimonials");
 const Partners = require("../models/partners");
+const SplashScreen = require("../models/splashScreen");
 
 let userController = {};
 
@@ -260,12 +261,25 @@ userController.getAcademyProfiles = async (req, res) => {
       });
     }
 
-    let result = await dataServices.dataAggregationWithPagination(
-      Users,
-      pipeline,
-      data.page,
-      data.pageLimit
-    );
+    if (data.city) {
+      pipeline.push({
+        $match: {
+          city: data.city
+        }
+      });
+    }
+
+    let result;
+    if (data.sportId) {
+      result = await dataServices.dataAggregation(Users, pipeline);
+    } else {
+      result = await dataServices.dataAggregationWithPagination(
+        Users,
+        pipeline,
+        data.page,
+        data.pageLimit
+      );
+    }
 
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
@@ -375,6 +389,68 @@ userController.getPlayerProfileById = async (req, res) => {
     ];
 
     let result = await dataServices.dataAggregation(Users, pipeline);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getSplashScreens = async (req, res) => {
+  try {
+    const result = await dataServices.getData(SplashScreen);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getPlayersByAcademyId = async (req, res) => {
+  try {
+    let pipeline = [];
+    const ID = utils.convertToObjectId(req.params.id);
+    const criteria = { academyId: ID };
+    const playerIds = await dataServices.findOne(AcademyPlayers, criteria);
+
+    pipeline.push(
+      { $match: { _id: { $in: playerIds.players } } },
+      {
+        $lookup: {
+          from: "playerprofiles",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "profileData"
+        }
+      },
+      {
+        $lookup: {
+          from: "academyprofiles",
+          localField: "academyId",
+          foreignField: "academyId",
+          pipeline: [{ $project: { logo: 1, academyImage: 1, about: 1 } }],
+          as: "academyProfileData"
+        }
+      },
+      {
+        $lookup: {
+          from: "playervideos",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "videosData"
+        }
+      },
+      {
+        $lookup: {
+          from: "playerachivements",
+          localField: "_id",
+          foreignField: "playerId",
+          as: "AchivementsData"
+        }
+      }
+    );
+
+    const result = await dataServices.dataAggregation(Users, pipeline);
 
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {

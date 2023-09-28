@@ -30,6 +30,9 @@ const schema = mongoose.Schema(
       type: Number,
       required: true
     },
+    academyId: {
+      type: mongoose.Types.ObjectId
+    },
     academyName: {
       type: String
     },
