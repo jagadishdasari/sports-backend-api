@@ -197,7 +197,7 @@ userController.getAcademyProfiles = async (req, res) => {
 
     const userLongitude = parseFloat(data.longitude);
     const userLatitude = parseFloat(data.latitude);
-    const unitValue = 1;
+    const unitValue = 1000;
 
     let pipeline = [
       {
