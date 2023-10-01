@@ -25,7 +25,7 @@ route.post(
   upload.oneFile("image"),
   s3Upload.uploadSingleMediaToS3("image"),
   function(req, res) {
-    output.makeSuccessResponse(res, { imageUrl1: req.body });
+    output.makeSuccessResponseWithMessage(res, 2, 200, req.body.location);
   }
 );
 
