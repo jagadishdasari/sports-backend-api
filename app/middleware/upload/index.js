@@ -3,7 +3,7 @@ const path = require("path");
 //make storage defination. There is a uploads directory in the root folder every upload in that folder
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, path.resolve("./public"));
+    cb(null, path.resolve("./app/public"));
   },
   filename: function(req, file, cb) {
     console.log("file", cb);
