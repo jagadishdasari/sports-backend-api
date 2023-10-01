@@ -207,7 +207,7 @@ userController.getAcademyProfiles = async (req, res) => {
           distanceMultiplier: 1 / unitValue,
           key: "location",
           spherical: true,
-          query: { authType: 2, isApproved: true }
+          query: { authType: 2, isApproved: true, profileStatus: 3 }
         }
       },
       {
@@ -247,12 +247,14 @@ userController.getAcademyProfiles = async (req, res) => {
           city: 1,
           state: 1,
           pincode: 1,
+          isSubscribed: 1,
           distance: { $round: ["$distance", 0] },
           profileData: 1,
           bannersData: 1,
           videosData: 1
         }
-      }
+      },
+      { $sort: { isSubscribed: -1, distance: 1 } }
     ];
 
     if (data.sportId) {

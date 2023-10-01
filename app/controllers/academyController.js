@@ -15,6 +15,7 @@ academyController.createProfile = async (req, res) => {
   try {
     let data = req.body;
     data.academyId = utils.convertToObjectId(req.AuthId);
+    data.profileStatus = 1;
 
     const checkProfile = await DataServices.findOne(AcademyProfile, {
       academyId: data.academyId
@@ -62,6 +63,7 @@ academyController.uploadBanners = async (req, res) => {
   try {
     let data = req.body;
     data.academyId = req.AuthId;
+    data.profileStatus = 2;
 
     const result = await DataServices.createData(AcademyBanners, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
@@ -74,6 +76,7 @@ academyController.uploadVideos = async (req, res) => {
   try {
     let data = req.body;
     data.academyId = req.AuthId;
+    data.profileStatus = 3;
 
     const result = await DataServices.createData(AcademyVideos, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
