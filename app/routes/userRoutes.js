@@ -3,9 +3,13 @@ const verify = require("../middleware/jwtTokenUser");
 const route = express.Router();
 const uploadImage = require("../controllers/upload");
 const imageUpload = require("../controllers/imageUploads");
+const upload = require("../middleware/upload");
+const s3Upload = require("../middleware/upload/s3");
 const validator = require("../middleware/joi");
 const userController = require("../controllers/users");
 const adminController = require("../controllers/admin");
+const subscribeController = require("../controllers/subscriptionController");
+const output = require("../output/index");
 
 route.post("/register", validator.registerSchema, userController.register);
 route.post("/login", validator.loginSchema, userController.login);
@@ -14,7 +18,16 @@ route.put("/profileupdate", verify.user, userController.profileUpdate);
 route.get("/profile", verify.user, userController.getUser);
 
 // image upload routes
-route.post("/upload", uploadImage.single("image"), imageUpload.uploadfile);
+// route.post("/upload", uploadImage.single("image"), imageUpload.uploadfile);
+
+route.post(
+  "/upload",
+  upload.oneFile("image"),
+  s3Upload.uploadSingleMediaToS3("image"),
+  function(req, res) {
+    output.makeSuccessResponse(res, { imageUrl1: req.body });
+  }
+);
 
 route.get("/getAcademys", userController.getAcademys);
 
@@ -49,5 +62,7 @@ route.get("/partners", userController.getPartners);
 route.get("/splashscreen", userController.getSplashScreens);
 
 route.get("/getPlayersByAcademyId/:id", userController.getPlayersByAcademyId);
+
+route.post("/checkout", subscribeController.checkout);
 
 module.exports = route;

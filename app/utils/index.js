@@ -3,12 +3,28 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const globalConstants = require("../config/constants");
 const msg91 = require("msg91").default;
+const { v4: uuidv4 } = require("uuid");
 msg91.initialize({ authKey: process.env.MSG_AUTHKEY });
 const utils = {};
 
 //this function use to make password string with salt.
-utils.sha256 = function(password) {
-  return sha256(password + "NB%$#$^&*(Y&*SDF");
+utils.sha256 = function(code) {
+  const base64Payload = code;
+  const apiEndpoint = "/pg/v1/pay";
+  const saltKey = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
+  const saltIndex = 1;
+
+  const concatenatedString = `${base64Payload}${apiEndpoint}${saltKey}`;
+
+  const sha256Hash = sha256(concatenatedString);
+
+  const finalResult = `${sha256Hash}###${saltIndex}`;
+  return finalResult;
+};
+
+utils.base64 = function(string) {
+  const base64Payload = Buffer.from(string).toString("base64");
+  return base64Payload;
 };
 
 utils.hashPassword = function(password) {
@@ -104,6 +120,27 @@ utils.getListMapperWithPaginationFromAggregate = function(
 // convert string to object in mongoose db
 utils.convertToObjectId = function(id) {
   return mongoose.Types.ObjectId(id);
+};
+
+utils.generateTransactionId = function() {
+  const timestamp = Date.now();
+  const random = Math.floor(Math.random() * 1000000);
+
+  const transactionId = `${timestamp}${random}`;
+  console.log(transactionId, "idddddddddd");
+  return transactionId;
+};
+
+utils.generateOrderId = function(length = 6) {
+  const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let code = "";
+
+  const max = characters.length - 1;
+  for (let i = 0; i < length; i++) {
+    code += characters[Math.floor(Math.random() * (max + 1))];
+  }
+
+  return code;
 };
 
 utils.sendSms = async function(number) {
