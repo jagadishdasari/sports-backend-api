@@ -180,7 +180,8 @@ validator.academyProfileSchema = function(req, res, next) {
     successRate: Joi.number().required(),
     students: Joi.number().required(),
     coachCount: Joi.number().required(),
-    sports: Joi.array().required()
+    sports: Joi.array().required(),
+    bannerImage: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);

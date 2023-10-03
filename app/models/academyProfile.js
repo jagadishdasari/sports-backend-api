@@ -30,6 +30,21 @@ const schema = mongoose.Schema(
     students: {
       type: Number
     },
+    facebookLink: {
+      type: String
+    },
+    twitterLink: {
+      type: String
+    },
+    instagramLink: {
+      type: String
+    },
+    youtubeLink: {
+      type: String
+    },
+    bannerImage: {
+      type: String
+    },
     sports: [
       {
         type: mongoose.Types.ObjectId,

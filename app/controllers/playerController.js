@@ -20,6 +20,11 @@ playerController.createProfile = async (req, res) => {
     if (checkProfile) throw 26;
 
     const result = await DataServices.insertOne(Playerprofile, data);
+    await DataServices.updateData(
+      Users,
+      { _id: data.playerId },
+      { profileStatus: 1 }
+    );
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
@@ -48,6 +53,11 @@ playerController.uploadVideos = async (req, res) => {
     data.playerId = req.AuthId;
 
     const result = await DataServices.createData(PlayerVideos, data);
+    await DataServices.updateData(
+      Users,
+      { _id: data.playerId },
+      { profileStatus: 2 }
+    );
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
@@ -74,6 +84,11 @@ playerController.createAchivement = async (req, res) => {
     data.playerId = req.AuthId;
 
     const result = await DataServices.createData(PlayerAchivements, data);
+    await DataServices.updateData(
+      Users,
+      { _id: data.playerId },
+      { profileStatus: 3 }
+    );
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);

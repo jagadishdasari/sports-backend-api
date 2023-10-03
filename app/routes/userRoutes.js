@@ -65,4 +65,6 @@ route.get("/getPlayersByAcademyId/:id", userController.getPlayersByAcademyId);
 
 route.post("/checkout", subscribeController.checkout);
 
+route.get("/check/status/:id", subscribeController.callStatus);
+
 module.exports = route;

@@ -22,6 +22,19 @@ utils.sha256 = function(code) {
   return finalResult;
 };
 
+utils.sha256Status = function(code) {
+  const apiEndpoint = `/pg/v1/status/MERCHANTUAT/${code}`;
+  const saltKey = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
+  const saltIndex = 1;
+
+  const concatenatedString = `${apiEndpoint}${saltKey}`;
+
+  const sha256Hash = sha256(concatenatedString);
+
+  const finalResult = `${sha256Hash}###${saltIndex}`;
+  return finalResult;
+};
+
 utils.base64 = function(string) {
   const base64Payload = Buffer.from(string).toString("base64");
   return base64Payload;

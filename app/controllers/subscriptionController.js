@@ -36,4 +36,16 @@ subscribeController.checkout = async (req, res) => {
   }
 };
 
+subscribeController.callStatus = async (req, res) => {
+  try {
+    let Id = req.params.id;
+
+    const result = await paymentFunctions.callStatus(Id);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
 module.exports = subscribeController;
