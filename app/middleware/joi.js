@@ -181,7 +181,11 @@ validator.academyProfileSchema = function(req, res, next) {
     students: Joi.number().required(),
     coachCount: Joi.number().required(),
     sports: Joi.array().required(),
-    bannerImage: Joi.string().required()
+    bannerImage: Joi.string().required(),
+    facebookLink: Joi.string(),
+    twitterLink: Joi.string(),
+    instagramLink: Joi.string(),
+    youtubeLink: Joi.string()
   });
 
   let validatedRes = schema.validate(req.body);
