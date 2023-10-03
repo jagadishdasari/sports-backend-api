@@ -49,7 +49,6 @@ userController.register = async (req, res) => {
       token: accessToken
     };
 
-    await utils.sendSms(newUser.mobile);
     return output.makeSuccessResponseWithMessage(res, 6, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
