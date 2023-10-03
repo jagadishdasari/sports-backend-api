@@ -8,10 +8,10 @@ msg91.initialize({ authKey: process.env.MSG_AUTHKEY });
 const utils = {};
 
 //this function use to make password string with salt.
-utils.sha256 = function(code) {
+utils.sha256 = function (code) {
   const base64Payload = code;
   const apiEndpoint = "/pg/v1/pay";
-  const saltKey = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
+  const saltKey = process.env.SALT_KEY_DEV;
   const saltIndex = 1;
 
   const concatenatedString = `${base64Payload}${apiEndpoint}${saltKey}`;
@@ -22,9 +22,9 @@ utils.sha256 = function(code) {
   return finalResult;
 };
 
-utils.sha256Status = function(code) {
-  const apiEndpoint = `/pg/v1/status/MERCHANTUAT/${code}`;
-  const saltKey = "099eb0cd-02cf-4e2a-8aca-3e6c6aff0399";
+utils.sha256Status = function (code) {
+  const apiEndpoint = `/pg/v1/status/${process.env.PHONEPE_MER_ID_DEV}/${code}`;
+  const saltKey = process.env.SALT_KEY_DEV;
   const saltIndex = 1;
 
   const concatenatedString = `${apiEndpoint}${saltKey}`;
@@ -35,20 +35,20 @@ utils.sha256Status = function(code) {
   return finalResult;
 };
 
-utils.base64 = function(string) {
+utils.base64 = function (string) {
   const base64Payload = Buffer.from(string).toString("base64");
   return base64Payload;
 };
 
-utils.hashPassword = function(password) {
+utils.hashPassword = function (password) {
   return bcrypt.hash(password, 10);
 };
 
-utils.comparePassword = function(password, userPassword) {
+utils.comparePassword = function (password, userPassword) {
   return bcrypt.compare(password, userPassword);
 };
 
-utils.offset = function(page, pageLimit) {
+utils.offset = function (page, pageLimit) {
   if (!pageLimit) {
     pageLimit = 20;
   }
@@ -59,14 +59,14 @@ utils.offset = function(page, pageLimit) {
   return (page - 1) * pageLimit;
 };
 
-utils.pageLimit = function(pageLimit) {
+utils.pageLimit = function (pageLimit) {
   if (pageLimit) {
     return pageLimit;
   }
   return globalConstants.pageLimit;
 };
 
-utils.hasResult = function(totalResult, page, pageLimit) {
+utils.hasResult = function (totalResult, page, pageLimit) {
   const totalPage = Math.ceil(totalResult / pageLimit);
   let nextPage = false;
 
@@ -77,13 +77,13 @@ utils.hasResult = function(totalResult, page, pageLimit) {
 };
 
 // this function make output response when return list.
-utils.getListMapperWithPagination = function(
+utils.getListMapperWithPagination = function (
   dataList,
   resultCount,
   page,
   pageLimit
 ) {
-  return resultCount.then(function(totalRes) {
+  return resultCount.then(function (totalRes) {
     var makeNewResponse = {};
     makeNewResponse.list = dataList;
     makeNewResponse.hasResult = utils.hasResult(totalRes, page, pageLimit);
@@ -91,13 +91,13 @@ utils.getListMapperWithPagination = function(
     return makeNewResponse;
   });
 };
-utils.recordCount = function(q) {
+utils.recordCount = function (q) {
   q.push({
     $count: "recordCount"
   });
   return q;
 };
-utils.getBlankListMapper = function() {
+utils.getBlankListMapper = function () {
   // return resultCount.then(function () {
   var makeNewResponse = {};
   console.log(makeNewResponse);
@@ -109,13 +109,13 @@ utils.getBlankListMapper = function() {
 };
 
 // this function make output response when return list.
-utils.getListMapperWithPaginationFromAggregate = function(
+utils.getListMapperWithPaginationFromAggregate = function (
   dataList,
   resultCount,
   page,
   pageLimit
 ) {
-  return resultCount.then(function(totalRes) {
+  return resultCount.then(function (totalRes) {
     var makeNewResponse = {};
 
     makeNewResponse.list = dataList;
@@ -131,11 +131,11 @@ utils.getListMapperWithPaginationFromAggregate = function(
 };
 
 // convert string to object in mongoose db
-utils.convertToObjectId = function(id) {
+utils.convertToObjectId = function (id) {
   return mongoose.Types.ObjectId(id);
 };
 
-utils.generateTransactionId = function() {
+utils.generateTransactionId = function () {
   const timestamp = Date.now();
   const random = Math.floor(Math.random() * 1000000);
 
@@ -144,7 +144,7 @@ utils.generateTransactionId = function() {
   return transactionId;
 };
 
-utils.generateOrderId = function(length = 6) {
+utils.generateOrderId = function (length = 6) {
   const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let code = "";
 
@@ -156,7 +156,7 @@ utils.generateOrderId = function(length = 6) {
   return code;
 };
 
-utils.sendSms = async function(number) {
+utils.sendSms = async function (number) {
   try {
     let otp = msg91.getOTP(process.env.SMS_TEMPLATE_ID);
     otp.send(`91${number}`);
@@ -166,7 +166,7 @@ utils.sendSms = async function(number) {
   }
 };
 
-utils.verifyOtp = async function(data) {
+utils.verifyOtp = async function (data) {
   try {
     let otp = msg91.getOTP(process.env.SMS_TEMPLATE_ID);
     const result = await otp.verify(`91${data.number}`, `${data.code}`);

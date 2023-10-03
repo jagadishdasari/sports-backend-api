@@ -1,14 +1,13 @@
 const express = require("express");
 const verify = require("../middleware/jwtTokenUser");
 const route = express.Router();
-const uploadImage = require("../controllers/upload");
-const imageUpload = require("../controllers/imageUploads");
+// const uploadImage = require("../controllers/upload");
+// const imageUpload = require("../controllers/imageUploads");
 const upload = require("../middleware/upload");
 const s3Upload = require("../middleware/upload/s3");
 const validator = require("../middleware/joi");
 const userController = require("../controllers/users");
 const adminController = require("../controllers/admin");
-const subscribeController = require("../controllers/subscriptionController");
 const output = require("../output/index");
 
 route.post("/register", validator.registerSchema, userController.register);
@@ -24,7 +23,7 @@ route.post(
   "/upload",
   upload.oneFile("image"),
   s3Upload.uploadSingleMediaToS3("image"),
-  function(req, res) {
+  function (req, res) {
     output.makeSuccessResponseWithMessage(res, 2, 200, req.body.location);
   }
 );
@@ -62,9 +61,5 @@ route.get("/partners", userController.getPartners);
 route.get("/splashscreen", userController.getSplashScreens);
 
 route.get("/getPlayersByAcademyId/:id", userController.getPlayersByAcademyId);
-
-route.post("/checkout", subscribeController.checkout);
-
-route.get("/check/status/:id", subscribeController.callStatus);
 
 module.exports = route;

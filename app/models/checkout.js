@@ -8,10 +8,7 @@ const schema = mongoose.Schema(
       required: true
     },
     subscriptionId: {
-      type: mongoose.Types.ObjectId
-    },
-    merchantTransactionId: {
-      type: Number,
+      type: String, //need to replace the type with Object id
       required: true
     },
     transactionId: {
@@ -36,5 +33,5 @@ const schema = mongoose.Schema(
   }
 );
 
-const splashScreens = mongoose.model("splashscreen", schema);
-module.exports = splashScreens;
+const Checkout = mongoose.model("checkout", schema);
+module.exports = Checkout;

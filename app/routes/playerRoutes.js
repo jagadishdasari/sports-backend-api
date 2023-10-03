@@ -3,6 +3,7 @@ const verify = require("../middleware/jwtTokenUser");
 const route = express.Router();
 const validator = require("../middleware/joi");
 const playerController = require("../controllers/playerController");
+const subscribeController = require("../controllers/subscriptionController");
 
 // Profile Routes
 route.post(
@@ -68,5 +69,14 @@ route.delete(
   verify.player,
   playerController.deletePlayerAchivement
 );
+
+route.post(
+  "/checkout",
+  verify.player,
+  validator.checkoutSchema,
+  subscribeController.checkout
+);
+
+route.get("/check/status/:id", verify.player, subscribeController.callStatus);
 
 module.exports = route;

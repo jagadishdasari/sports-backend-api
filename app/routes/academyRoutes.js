@@ -3,6 +3,7 @@ const verify = require("../middleware/jwtTokenUser");
 const route = express.Router();
 const validator = require("../middleware/joi");
 const academyController = require("../controllers/academyController");
+const subscribeController = require("../controllers/subscriptionController");
 
 route.post(
   "/createProfile",
@@ -75,5 +76,14 @@ route.put(
   validator.updateStatus,
   academyController.approvePlayer
 );
+
+route.post(
+  "/checkout",
+  verify.academy,
+  validator.checkoutSchema,
+  subscribeController.checkout
+);
+
+route.get("/check/status/:id", verify.academy, subscribeController.callStatus);
 
 module.exports = route;
