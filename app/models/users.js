@@ -63,6 +63,10 @@ const schema = mongoose.Schema(
       type: Boolean,
       default: false
     },
+    subscribedDate: {
+      type: Date,
+      default: null
+    },
     profileStatus: {
       type: Number,
       default: 0
