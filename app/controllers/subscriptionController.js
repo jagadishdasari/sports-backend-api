@@ -4,15 +4,21 @@ const paymentFunctions = require("../payment");
 const DataServices = require("../Services/DataServices");
 const Users = require("../models/users");
 const Checkout = require("../models/checkout");
+const Subscription = require("../models/subscriptions");
 
 let subscribeController = {};
 
 subscribeController.checkout = async (req, res) => {
   try {
     let data = req.body;
-    data.amount = req.body.amount * 100;
+
+    const subscriptionData = await DataServices.findOne(Subscription, {
+      _id: utils.convertToObjectId(data.subscriptionId)
+    });
+
+    data.amount = subscriptionData.cost - subscriptionData.discount * 100;
     data.merchantId = process.env.PHONEPE_MER_ID_DEV;
-    data.merchantTransactionId = utils.generateTransactionId(); //to be replaced with req.body.subscriptionId
+    data.merchantTransactionId = data.subscriptionId;
     data.merchantOrderId = utils.generateOrderId(9);
     data.merchantUserId = req.AuthId;
     data.message = `payment for order placed ${data.merchantOrderId}`;

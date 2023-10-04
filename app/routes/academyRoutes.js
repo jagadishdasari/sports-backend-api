@@ -86,4 +86,6 @@ route.post(
 
 route.get("/check/status/:id", verify.academy, subscribeController.callStatus);
 
+route.get("/subscriptions", verify.academy, academyController.getSubscriptions);
+
 module.exports = route;

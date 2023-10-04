@@ -201,4 +201,13 @@ playerController.deletePlayerAchivement = async (req, res) => {
   }
 };
 
+playerController.getSubscriptions = async (req, res) => {
+  try {
+    const result = await DataServices.getData(Subscription, { authType: 3 });
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
 module.exports = playerController;

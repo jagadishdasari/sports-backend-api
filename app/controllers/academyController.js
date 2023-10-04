@@ -8,6 +8,7 @@ const DataServices = require("../Services/DataServices");
 const AcademyBanners = require("../models/academyBanners");
 const AcademyVideos = require("../models/academyVideos");
 const AcademyPlayers = require("../models/academyPlayers");
+const Subscription = require("../models/subscriptions");
 
 let academyController = {};
 
@@ -268,6 +269,15 @@ academyController.approvePlayer = async (req, res) => {
 
     await DataServices.updateData(Users, criteria, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+academyController.getSubscriptions = async (req, res) => {
+  try {
+    const result = await DataServices.getData(Subscription, { authType: 2 });
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }

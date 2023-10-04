@@ -115,6 +115,30 @@ route.delete(
   adminController.deleteSplashScreenById
 );
 
+// Subscription Routes
+route.post(
+  "/subscription",
+  verify.admin,
+  validator.subscriptionSchema,
+  adminController.createSubscription
+);
+route.get("/subscriptions", verify.admin, adminController.getSubscriptions);
+route.get(
+  "/subscription/:id",
+  verify.admin,
+  adminController.getSubscriptionById
+);
+route.put(
+  "/subscription/:id",
+  verify.admin,
+  adminController.updateSubscriptionById
+);
+route.delete(
+  "/subscription/:id",
+  verify.admin,
+  adminController.deleteSubscriptionById
+);
+
 // update profiles
 route.put(
   "/updateAcademyProfile",

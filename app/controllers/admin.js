@@ -10,6 +10,7 @@ const ContactUs = require("../models/contactus");
 const Testimonials = require("../models/testimonials");
 const Partners = require("../models/partners");
 const SplashScreen = require("../models/splashScreen");
+const Subscription = require("../models/subscriptions");
 const DataServices = require("../Services/DataServices");
 
 let adminController = {};
@@ -417,6 +418,62 @@ adminController.deleteSplashScreenById = async (req, res) => {
     const Id = utils.convertToObjectId(req.params.id);
     const criteria = { _id: Id };
     await dataServices.deleteOne(SplashScreen, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.createSubscription = async (req, res) => {
+  try {
+    let data = req.body;
+
+    await dataServices.insertOne(Subscription, data);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getSubscriptions = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Subscription);
+
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getSubscriptionById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const result = await dataServices.findOne(Subscription, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.updateSubscriptionById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    const updateData = { ...req.body };
+    await dataServices.updateData(Subscription, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deleteSubscriptionById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    await dataServices.deleteOne(Subscription, criteria);
     return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);

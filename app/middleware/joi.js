@@ -14,7 +14,8 @@ validator.registerSchema = function (req, res, next) {
     location: Joi.object().required(),
     academyId: Joi.string().allow(null),
     academyName: Joi.string().allow(null),
-    name: Joi.string()
+    name: Joi.string(),
+    code: Joi.string()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -68,6 +69,23 @@ validator.verifySchema = function (req, res, next) {
   let schema = Joi.object({
     number: Joi.number().required(),
     code: Joi.number().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map((detail) => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.verifyReferralSchema = function (req, res, next) {
+  let schema = Joi.object({
+    code: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -157,6 +175,26 @@ validator.testimonialSchema = function (req, res, next) {
 validator.partnerSchema = function (req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required()
+  });
+
+  let validatedRes = schema.validate(req.body);
+  if (validatedRes.error) {
+    const { error } = validatedRes;
+    const formattedErrors = error.details.map((detail) => ({
+      field: detail.path.join("."),
+      message: detail.path.join(".") + " is required"
+    }));
+    return res.status(400).json({ status: 400, error: formattedErrors[0] });
+  }
+  next();
+};
+
+validator.subscriptionSchema = function (req, res, next) {
+  let schema = Joi.object({
+    authType: Joi.number().required(),
+    planPeriod: Joi.number().required(),
+    cost: Joi.number().required(),
+    discount: Joi.number()
   });
 
   let validatedRes = schema.validate(req.body);
@@ -392,8 +430,7 @@ validator.approveUpdatesSchema = function (req, res, next) {
 
 validator.checkoutSchema = function (req, res, next) {
   let schema = Joi.object({
-    amount: Joi.number().required(),
-    subscriptionId: Joi.string()
+    subscriptionId: Joi.string().required()
   });
 
   let validatedRes = schema.validate(req.body);

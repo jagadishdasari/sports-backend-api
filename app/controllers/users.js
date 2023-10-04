@@ -10,12 +10,13 @@ const ContactUs = require("../models/contactus");
 const Testimonials = require("../models/testimonials");
 const Partners = require("../models/partners");
 const SplashScreen = require("../models/splashScreen");
+const Referrals = require("../models/referrals");
 
 let userController = {};
 
 userController.register = async (req, res) => {
   try {
-    const data = req.body;
+    let data = req.body;
 
     const existingUser = await dataServices.findOne(Users, {
       mobile: data.mobile
@@ -26,6 +27,13 @@ userController.register = async (req, res) => {
 
     const userObject = { id: newUser._id, authType: newUser.authType };
     const accessToken = authJWt.signAccessToken(userObject);
+
+    const dataToSet = {
+      userId: newUser._id,
+      code: utils.generateOrderId(11)
+    };
+
+    await dataServices.createData(Referrals, dataToSet);
 
     if (data.academyId) {
       const AcademyId = utils.convertToObjectId(data.academyId);
@@ -40,6 +48,17 @@ userController.register = async (req, res) => {
         updatePlayers,
         { upsert: true }
       );
+    }
+
+    if (data.code) {
+      const Code = data.code;
+      const newUserObjectId = utils.convertToObjectId(newUser._id);
+      const pushId = {
+        $push: { referredIds: newUserObjectId },
+        isReferred: true
+      };
+
+      await dataServices.updateData(Referrals, { code: Code }, pushId);
     }
 
     const result = {
@@ -90,6 +109,19 @@ userController.verifyOtp = async (req, res) => {
     } else {
       return output.makeSuccessResponseWithMessage(res, 28, 400, result);
     }
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.verifyRefCode = async (req, res) => {
+  try {
+    let data = req.body;
+    const result = await dataServices.findOne(Referrals, {
+      code: data.code
+    });
+    if (!result) throw 29;
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }

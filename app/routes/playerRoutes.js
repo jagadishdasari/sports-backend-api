@@ -79,4 +79,6 @@ route.post(
 
 route.get("/check/status/:id", verify.player, subscribeController.callStatus);
 
+route.get("/subscriptions", verify.player, playerController.getSubscriptions);
+
 module.exports = route;

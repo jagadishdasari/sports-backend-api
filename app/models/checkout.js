@@ -8,7 +8,7 @@ const schema = mongoose.Schema(
       required: true
     },
     subscriptionId: {
-      type: String, //need to replace the type with Object id
+      type: mongoose.Types.ObjectId,
       required: true
     },
     transactionId: {
