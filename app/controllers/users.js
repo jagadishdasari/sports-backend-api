@@ -333,7 +333,7 @@ userController.getPlayerProfiles = async (req, res) => {
     let data = req.body;
 
     let pipeline = [
-      { $match: { authType: 3, isApproved: true, profileStatus: 3 } },
+      { $match: { authType: 3, isApproved: true, profileStatus: 2 } },
       {
         $lookup: {
           from: "playerprofiles",
