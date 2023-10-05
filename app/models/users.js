@@ -57,7 +57,7 @@ const schema = mongoose.Schema(
     },
     isApproved: {
       type: Boolean,
-      default: true
+      default: false
     },
     isSubscribed: {
       type: Boolean,
