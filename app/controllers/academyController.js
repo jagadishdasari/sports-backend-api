@@ -128,9 +128,29 @@ academyController.getCreatedProfile = async (req, res) => {
   try {
     const userID = utils.convertToObjectId(req.AuthId);
 
-    const result = await DataServices.getData(AcademyProfile, {
-      academyId: userID
-    });
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { academyId: userID } },
+      {
+        $lookup: {
+          from: "referrals",
+          localField: "academyId",
+          foreignField: "userId",
+          pipeline: [
+            {
+              $project: {
+                userId: 1,
+                code: 1
+              }
+            }
+          ],
+          as: "referralData"
+        }
+      }
+    );
+
+    const result = await DataServices.dataAggregation(AcademyProfile, pipeline);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);

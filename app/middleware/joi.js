@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 let validator = {};
 
-validator.registerSchema = function (req, res, next) {
+validator.registerSchema = function(req, res, next) {
   let schema = Joi.object({
     email: Joi.string().min(3).required().email(),
     mobile: Joi.number().required(),
@@ -21,7 +21,7 @@ validator.registerSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -30,7 +30,7 @@ validator.registerSchema = function (req, res, next) {
   next();
 };
 
-validator.adminRegisterSchema = function (req, res, next) {
+validator.adminRegisterSchema = function(req, res, next) {
   let schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
@@ -39,7 +39,7 @@ validator.adminRegisterSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -48,7 +48,7 @@ validator.adminRegisterSchema = function (req, res, next) {
   next();
 };
 
-validator.loginSchema = function (req, res, next) {
+validator.loginSchema = function(req, res, next) {
   let schema = Joi.object({
     mobile: Joi.number().required()
   });
@@ -56,7 +56,7 @@ validator.loginSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -65,7 +65,7 @@ validator.loginSchema = function (req, res, next) {
   next();
 };
 
-validator.verifySchema = function (req, res, next) {
+validator.verifySchema = function(req, res, next) {
   let schema = Joi.object({
     number: Joi.number().required(),
     code: Joi.number().required()
@@ -74,7 +74,7 @@ validator.verifySchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -83,7 +83,7 @@ validator.verifySchema = function (req, res, next) {
   next();
 };
 
-validator.verifyReferralSchema = function (req, res, next) {
+validator.verifyReferralSchema = function(req, res, next) {
   let schema = Joi.object({
     code: Joi.string().required()
   });
@@ -91,7 +91,7 @@ validator.verifyReferralSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -100,7 +100,7 @@ validator.verifyReferralSchema = function (req, res, next) {
   next();
 };
 
-validator.adminLoginSchema = function (req, res, next) {
+validator.adminLoginSchema = function(req, res, next) {
   let schema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
@@ -109,7 +109,7 @@ validator.adminLoginSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -118,7 +118,7 @@ validator.adminLoginSchema = function (req, res, next) {
   next();
 };
 
-validator.bannerSchema = function (req, res, next) {
+validator.bannerSchema = function(req, res, next) {
   let schema = Joi.object({
     wBanner: Joi.string().required()
   });
@@ -126,7 +126,7 @@ validator.bannerSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -135,7 +135,7 @@ validator.bannerSchema = function (req, res, next) {
   next();
 };
 
-validator.categorySchema = function (req, res, next) {
+validator.categorySchema = function(req, res, next) {
   let schema = Joi.object({
     sport: Joi.string().required(),
     image: Joi.string().required()
@@ -144,7 +144,7 @@ validator.categorySchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -153,7 +153,7 @@ validator.categorySchema = function (req, res, next) {
   next();
 };
 
-validator.testimonialSchema = function (req, res, next) {
+validator.testimonialSchema = function(req, res, next) {
   let schema = Joi.object({
     name: Joi.string().required(),
     image: Joi.string().required(),
@@ -163,7 +163,7 @@ validator.testimonialSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -172,7 +172,7 @@ validator.testimonialSchema = function (req, res, next) {
   next();
 };
 
-validator.partnerSchema = function (req, res, next) {
+validator.partnerSchema = function(req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required()
   });
@@ -180,7 +180,7 @@ validator.partnerSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -189,7 +189,7 @@ validator.partnerSchema = function (req, res, next) {
   next();
 };
 
-validator.subscriptionSchema = function (req, res, next) {
+validator.subscriptionSchema = function(req, res, next) {
   let schema = Joi.object({
     authType: Joi.number().required(),
     planPeriod: Joi.number().required(),
@@ -200,7 +200,7 @@ validator.subscriptionSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -209,7 +209,7 @@ validator.subscriptionSchema = function (req, res, next) {
   next();
 };
 
-validator.academyProfileSchema = function (req, res, next) {
+validator.academyProfileSchema = function(req, res, next) {
   let schema = Joi.object({
     about: Joi.string().required(),
     logo: Joi.string().required(),
@@ -229,7 +229,7 @@ validator.academyProfileSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -238,7 +238,7 @@ validator.academyProfileSchema = function (req, res, next) {
   next();
 };
 
-validator.playerProfileSchema = function (req, res, next) {
+validator.playerProfileSchema = function(req, res, next) {
   let schema = Joi.object({
     about: Joi.string().required(),
     aboutImage: Joi.string().required(),
@@ -266,7 +266,7 @@ validator.playerProfileSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -275,7 +275,7 @@ validator.playerProfileSchema = function (req, res, next) {
   next();
 };
 
-validator.notificationSchema = function (req, res, next) {
+validator.notificationSchema = function(req, res, next) {
   let schema = Joi.object({
     sportId: Joi.string().required(),
     title: Joi.string().required(),
@@ -286,7 +286,7 @@ validator.notificationSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -295,7 +295,7 @@ validator.notificationSchema = function (req, res, next) {
   next();
 };
 
-validator.contactSchema = function (req, res, next) {
+validator.contactSchema = function(req, res, next) {
   let schema = Joi.object({
     fullName: Joi.string().required(),
     email: Joi.string().required(),
@@ -306,7 +306,7 @@ validator.contactSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -315,7 +315,7 @@ validator.contactSchema = function (req, res, next) {
   next();
 };
 
-validator.uploadBannerSchema = function (req, res, next) {
+validator.uploadBannerSchema = function(req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required()
   });
@@ -323,7 +323,7 @@ validator.uploadBannerSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -332,7 +332,7 @@ validator.uploadBannerSchema = function (req, res, next) {
   next();
 };
 
-validator.uploadVideoSchema = function (req, res, next) {
+validator.uploadVideoSchema = function(req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required(),
     url: Joi.string().required(),
@@ -342,7 +342,7 @@ validator.uploadVideoSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -351,7 +351,7 @@ validator.uploadVideoSchema = function (req, res, next) {
   next();
 };
 
-validator.createAchivement = function (req, res, next) {
+validator.createAchivement = function(req, res, next) {
   let schema = Joi.object({
     image: Joi.string().required(),
     description: Joi.string().required(),
@@ -362,7 +362,7 @@ validator.createAchivement = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -371,7 +371,7 @@ validator.createAchivement = function (req, res, next) {
   next();
 };
 
-validator.getAcademySchema = function (req, res, next) {
+validator.getAcademySchema = function(req, res, next) {
   let schema = Joi.object({
     page: Joi.number().required(),
     pageLimit: Joi.number().required(),
@@ -384,7 +384,7 @@ validator.getAcademySchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -393,7 +393,7 @@ validator.getAcademySchema = function (req, res, next) {
   next();
 };
 
-validator.updateStatus = function (req, res, next) {
+validator.updateStatus = function(req, res, next) {
   let schema = Joi.object({
     id: Joi.string().required(),
     isApproved: Joi.boolean().required()
@@ -402,7 +402,7 @@ validator.updateStatus = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -411,7 +411,7 @@ validator.updateStatus = function (req, res, next) {
   next();
 };
 
-validator.approveUpdatesSchema = function (req, res, next) {
+validator.approveUpdatesSchema = function(req, res, next) {
   let schema = Joi.object({
     isApproved: Joi.boolean().required()
   }).unknown();
@@ -419,7 +419,7 @@ validator.approveUpdatesSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));
@@ -428,7 +428,7 @@ validator.approveUpdatesSchema = function (req, res, next) {
   next();
 };
 
-validator.checkoutSchema = function (req, res, next) {
+validator.checkoutSchema = function(req, res, next) {
   let schema = Joi.object({
     subscriptionId: Joi.string().required()
   });
@@ -436,7 +436,7 @@ validator.checkoutSchema = function (req, res, next) {
   let validatedRes = schema.validate(req.body);
   if (validatedRes.error) {
     const { error } = validatedRes;
-    const formattedErrors = error.details.map((detail) => ({
+    const formattedErrors = error.details.map(detail => ({
       field: detail.path.join("."),
       message: detail.path.join(".") + " is required"
     }));

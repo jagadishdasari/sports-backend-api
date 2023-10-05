@@ -5,6 +5,7 @@ const Playerprofile = require("../models/playerProfile");
 const PlayerVideos = require("../models/playerVideos");
 const PlayerAchivements = require("../models/playerAchivements");
 const Users = require("../models/users");
+const Subscription = require("../models/subscriptions");
 
 let playerController = {};
 
@@ -141,6 +142,15 @@ playerController.getPlayerProfile = async (req, res) => {
           localField: "_id",
           foreignField: "playerId",
           as: "AchivementsData"
+        }
+      },
+      {
+        $lookup: {
+          from: "referrals",
+          localField: "_id",
+          foreignField: "userId",
+          pipeline: [{ $project: { userId: 1, code: 1 } }],
+          as: "referralData"
         }
       }
     ];
