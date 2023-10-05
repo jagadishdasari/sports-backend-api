@@ -16,8 +16,12 @@ subscribeController.checkout = async (req, res) => {
       _id: utils.convertToObjectId(data.subscriptionId)
     });
 
-    data.amount =
-      Number(subscriptionData.cost - subscriptionData.discount) * 100;
+    const amount = subscriptionData.cost - subscriptionData.discount;
+    const gstPercentage = 18;
+
+    const gstAmount = Number(amount * gstPercentage) / 100;
+
+    data.amount = Number(amount + parseFloat(gstAmount.toFixed(0))) * 100;
     data.merchantId = process.env.PHONEPE_MER_ID_DEV;
     data.merchantTransactionId = data.subscriptionId;
     data.merchantOrderId = utils.generateOrderId(9);
