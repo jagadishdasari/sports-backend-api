@@ -457,32 +457,32 @@ userController.getPlayersByAcademyId = async (req, res) => {
           from: "playerprofiles",
           localField: "_id",
           foreignField: "playerId",
+          pipeline: [
+            { $project: { profilePicture: 1, game: 1, playing: 1, age: 1 } }
+          ],
           as: "profileData"
         }
       },
       {
         $lookup: {
-          from: "academyprofiles",
+          from: "users",
           localField: "academyId",
-          foreignField: "academyId",
-          pipeline: [{ $project: { logo: 1, academyImage: 1, about: 1 } }],
+          foreignField: "_id",
+          pipeline: [{ $project: { academyName: 1 } }],
           as: "academyProfileData"
         }
       },
+      { $unwind: "$profileData" },
+      { $unwind: "$academyProfileData" },
       {
-        $lookup: {
-          from: "playervideos",
-          localField: "_id",
-          foreignField: "playerId",
-          as: "videosData"
-        }
-      },
-      {
-        $lookup: {
-          from: "playerachivements",
-          localField: "_id",
-          foreignField: "playerId",
-          as: "AchivementsData"
+        $project: {
+          _id: 1,
+          name: 1,
+          academyName: "$academyProfileData.academyName",
+          profilePicture: "$profileData.profilePicture",
+          game: "$profileData.game",
+          playing: "$profileData.playing",
+          age: "$profileData.age"
         }
       }
     );
