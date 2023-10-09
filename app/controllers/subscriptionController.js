@@ -27,7 +27,7 @@ subscribeController.checkout = async (req, res) => {
     data.merchantOrderId = utils.generateOrderId(9);
     data.merchantUserId = req.AuthId;
     data.message = `payment for order placed ${data.merchantOrderId}`;
-    data.redirectUrl = `http://localhost:4200/#/payment/status/${data.merchantTransactionId}`;
+    data.redirectUrl = `https://dashboard.kredangan.com/#/payment/status/${data.merchantTransactionId}`;
     data.callbackUrl = "https://webhook.site/callback-url";
     data.paymentInstrument = {
       type: "PAY_PAGE"
