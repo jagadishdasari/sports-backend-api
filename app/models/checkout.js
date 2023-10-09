@@ -23,6 +23,10 @@ const schema = mongoose.Schema(
       type: Date,
       required: true
     },
+    subscriptionExpiryDate: {
+      type: Date,
+      required: true
+    },
     status: {
       type: Boolean,
       default: true

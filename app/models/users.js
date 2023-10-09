@@ -11,7 +11,7 @@ const locationSchema = mongoose.Schema({
   }
 });
 
-// authType   1=admin , 2= Academy, 3= Player
+// authType   1=admin , 2= Academy, 3= Player, 4= manager, 5=Employee
 const schema = mongoose.Schema(
   {
     name: {
@@ -64,6 +64,10 @@ const schema = mongoose.Schema(
       default: false
     },
     subscribedDate: {
+      type: Date,
+      default: null
+    },
+    subscriptionExpiryDate: {
       type: Date,
       default: null
     },

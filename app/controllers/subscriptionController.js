@@ -59,6 +59,17 @@ subscribeController.callStatus = async (req, res) => {
     const currentDate = new Date();
     const utcDateAsString = currentDate.toUTCString();
 
+    const subscriptionData = await DataServices.findOne(Subscription, {
+      _id: utils.convertToObjectId(Id)
+    });
+
+    const subscrDate = new Date(currentDate);
+    subscrDate.setFullYear(
+      currentDate.getFullYear() + subscriptionData.planPeriod
+    );
+
+    const subscriptionExpiryDate = subscrDate.toUTCString();
+
     const response = await paymentFunctions.callStatus(Id);
     const result = JSON.parse(response);
 
@@ -79,15 +90,25 @@ subscribeController.callStatus = async (req, res) => {
       data.transactionId = objToSend.txnId;
       data.amount = objToSend.amount;
       data.subscriptionDate = utcDateAsString;
+      data.subscriptionExpiryDate = subscriptionExpiryDate;
 
       const criteria = { _id: utils.convertToObjectId(req.AuthId) };
-      const dataToSet = { isSubscribed: true, subscribedDate: utcDateAsString };
+      const dataToSet = {
+        isSubscribed: true,
+        subscribedDate: utcDateAsString,
+        subscriptionExpiryDate: subscriptionExpiryDate
+      };
 
       await DataServices.createData(Checkout, data);
       await DataServices.updateData(Users, criteria, dataToSet);
     }
 
-    return output.makeSuccessResponseWithMessage(res, 2, 200, objToSend);
+    return output.makeSuccessResponseWithMessage(
+      res,
+      2,
+      200,
+      subscriptionExpiryDate
+    );
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }

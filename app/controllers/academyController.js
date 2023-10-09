@@ -56,6 +56,9 @@ academyController.updateProfile = async (req, res) => {
 academyController.createUpdate = async (req, res) => {
   try {
     let data = req.body;
+    data.userId = utils.convertToObjectId(req.AuthId);
+
+    if (!req.Subscribe) throw 30;
 
     const result = await DataServices.createData(Update, data);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
@@ -67,7 +70,15 @@ academyController.createUpdate = async (req, res) => {
 academyController.uploadBanners = async (req, res) => {
   try {
     let data = req.body;
-    data.academyId = req.AuthId;
+    data.academyId = utils.convertToObjectId(req.AuthId);
+
+    if (!req.Subscribe) {
+      const checkBanners = await DataServices.getData(AcademyBanners, {
+        academyId: data.academyId
+      });
+
+      if (checkBanners.length > 1) throw 30;
+    }
 
     const result = await DataServices.createData(AcademyBanners, data);
     await dataServices.updateData(
@@ -84,7 +95,15 @@ academyController.uploadBanners = async (req, res) => {
 academyController.uploadVideos = async (req, res) => {
   try {
     let data = req.body;
-    data.academyId = req.AuthId;
+    data.academyId = utils.convertToObjectId(req.AuthId);
+
+    if (!req.Subscribe) {
+      const checkVideos = await DataServices.getData(AcademyVideos, {
+        academyId: data.academyId
+      });
+
+      if (checkVideos.length > 1) throw 30;
+    }
 
     const result = await DataServices.createData(AcademyVideos, data);
     await dataServices.updateData(

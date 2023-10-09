@@ -14,6 +14,8 @@ playerController.createProfile = async (req, res) => {
     let data = req.body;
     data.playerId = utils.convertToObjectId(req.AuthId);
 
+    if (!req.Subscribe) throw 30;
+
     const checkProfile = await DataServices.findOne(Playerprofile, {
       playerId: data.playerId
     });
@@ -53,6 +55,8 @@ playerController.uploadVideos = async (req, res) => {
     let data = req.body;
     data.playerId = req.AuthId;
 
+    if (!req.Subscribe) throw 30;
+
     const result = await DataServices.createData(PlayerVideos, data);
     await DataServices.updateData(
       Users,
@@ -83,6 +87,8 @@ playerController.createAchivement = async (req, res) => {
   try {
     let data = req.body;
     data.playerId = req.AuthId;
+
+    if (!req.Subscribe) throw 30;
 
     const result = await DataServices.createData(PlayerAchivements, data);
     await DataServices.updateData(

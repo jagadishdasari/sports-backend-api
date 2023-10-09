@@ -18,9 +18,9 @@ userController.register = async (req, res) => {
   try {
     let data = req.body;
 
-    if (data.authType === 2) {
-      data.isApproved = true;
-    }
+    // if (data.authType === 2) {
+    //   data.isApproved = true;
+    // }
 
     const existingUser = await dataServices.findOne(Users, {
       mobile: data.mobile

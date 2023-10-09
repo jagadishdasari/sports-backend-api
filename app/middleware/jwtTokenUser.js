@@ -43,10 +43,10 @@ authChecker.academy = async function(req, res, next) {
 
     if (!userExist) throw 1002;
     if (userExist.authType != 2) throw 1500;
-    // if (!userExist.kycStatus) throw 1003;
 
     req.AuthId = userExist._id;
     req.AuthType = userExist.authType;
+    req.Subscribe = userExist.isSubscribed;
 
     next();
   } catch (error) {
@@ -71,6 +71,7 @@ authChecker.player = async function(req, res, next) {
 
     req.AuthId = userExist._id;
     req.AuthType = userExist.authType;
+    req.Subscribe = userExist.isSubscribed;
 
     next();
   } catch (error) {

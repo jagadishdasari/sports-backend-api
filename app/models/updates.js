@@ -7,6 +7,11 @@ const schema = mongoose.Schema(
       ref: "categories",
       required: true
     },
+    userId: {
+      type: mongoose.Types.ObjectId,
+      ref: "users",
+      required: true
+    },
     title: {
       type: String,
       required: true

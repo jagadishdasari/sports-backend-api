@@ -28,6 +28,7 @@ error[26] = "Already Profile Exists. Please Edit Profile";
 error[27] = "Approval is Pending. Please wait for 24 Hrs";
 error[28] = "Failed";
 error[29] = "Wrong ReferralCode";
+error[30] = "Please Subscribe";
 
 error[1000] = "is required";
 error[1001] =
