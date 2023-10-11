@@ -18,13 +18,19 @@ userController.register = async (req, res) => {
   try {
     let data = req.body;
 
-    // if (data.authType === 2) {
-    //   data.isApproved = true;
-    // }
+    if (data.authType === 4) {
+      data.isApproved = true;
+    }
+
+    if (data.authType === 5) {
+      data.isApproved = true;
+      data.managerId = req.AuthId;
+    }
 
     const existingUser = await dataServices.findOne(Users, {
       mobile: data.mobile
     });
+
     if (existingUser) throw 1;
 
     const newUser = await dataServices.insertOne(Users, data);
@@ -84,7 +90,10 @@ userController.login = async (req, res) => {
     const user = await dataServices.findOne(Users, { mobile });
 
     if (!user) throw 12;
-    if (user.isApproved === false) throw 27;
+
+    if (user.authType === 3) {
+      if (user.isApproved === false) throw 27;
+    }
 
     const userObject = {
       id: user._id,
@@ -134,6 +143,16 @@ userController.verifyRefCode = async (req, res) => {
 userController.getUser = async (req, res) => {
   try {
     const userId = utils.convertToObjectId(req.AuthId);
+    const result = await dataServices.findOne(Users, { _id: userId });
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+userController.getUserById = async (req, res) => {
+  try {
+    const userId = utils.convertToObjectId(req.params.id);
     const result = await dataServices.findOne(Users, { _id: userId });
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {

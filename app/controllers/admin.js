@@ -100,6 +100,49 @@ adminController.getAllUsers = async (req, res) => {
   }
 };
 
+adminController.getAllManagers = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Users, { authType: 4 });
+    if (result.length === 0) throw 25;
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.managerUpdate = async (req, res) => {
+  try {
+    const userId = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: userId };
+    const updateData = req.body;
+    await dataServices.updateData(Users, criteria, updateData);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.deleteManagerById = async (req, res) => {
+  try {
+    const Id = utils.convertToObjectId(req.params.id);
+    const criteria = { _id: Id };
+    await dataServices.deleteOne(Users, criteria);
+    return output.makeSuccessResponseWithMessage(res, 2, 200);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getAllEmploys = async (req, res) => {
+  try {
+    const result = await dataServices.getData(Users, { authType: 5 });
+    if (result.length === 0) throw 25;
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
 adminController.getAllAcademies = async (req, res) => {
   try {
     const result = await dataServices.getData(Users, {

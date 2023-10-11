@@ -5,6 +5,7 @@ const uploadImage = require("../controllers/upload");
 const imageUpload = require("../controllers/imageUploads");
 const validator = require("../middleware/joi");
 const adminController = require("../controllers/admin");
+const userController = require("../controllers/users");
 
 // user routes
 route.post("/login", validator.adminLoginSchema, adminController.adminLogin);
@@ -15,6 +16,21 @@ route.post(
 );
 route.get("/users", verify.admin, adminController.getAllUsers);
 route.get("/merchantusers", verify.admin, adminController.getAllAcademies);
+
+// manager Routes
+route.post("/manager/add", validator.managerSchema, userController.register);
+route.get("/managers", verify.admin, adminController.getAllManagers);
+route.get("/manager/:id", verify.admin, userController.getUserById);
+route.put(
+  "/manager/update/:id",
+  verify.admin,
+  validator.managerSchema,
+  adminController.managerUpdate
+);
+route.delete("/manager/:id", verify.admin, adminController.deleteManagerById);
+
+// Employ Routes
+route.get("/employs", verify.admin, adminController.getAllEmploys);
 
 // image upload routes
 route.post("/upload", uploadImage.single("image"), imageUpload.uploadfile);

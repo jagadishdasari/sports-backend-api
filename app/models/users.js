@@ -33,6 +33,9 @@ const schema = mongoose.Schema(
     academyId: {
       type: mongoose.Types.ObjectId
     },
+    managerId: {
+      type: mongoose.Types.ObjectId
+    },
     academyName: {
       type: String
     },

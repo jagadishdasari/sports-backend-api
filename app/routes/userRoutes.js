@@ -18,7 +18,12 @@ route.post(
   validator.verifyReferralSchema,
   userController.verifyRefCode
 );
-route.put("/profileupdate", verify.user, userController.profileUpdate);
+route.put(
+  "/profileupdate",
+  verify.user,
+  validator.registerSchema,
+  userController.profileUpdate
+);
 route.get("/profile", verify.user, userController.getUser);
 
 // image upload routes

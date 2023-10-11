@@ -30,13 +30,15 @@ app.get("/", (req, res) => {
 // load routes
 app.use("/api/player", require("./app/routes/playerRoutes"));
 app.use("/api/academy", require("./app/routes/academyRoutes"));
+app.use("/api/manager", require("./app/routes/managerRoutes"));
+app.use("/api/employ", require("./app/routes/employRoutes"));
 app.use("/api/admin", require("./app/routes/adminRoutes"));
 app.use("/api/user", require("./app/routes/userRoutes"));
 
 app.use("/img", express.static(path.join(__dirname, "app/img")));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.status(404);
 
   // respond with html page

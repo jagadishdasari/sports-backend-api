@@ -5,7 +5,7 @@ const DataServices = require("../Services/DataServices");
 const jwtService = require("./jwtHandler");
 let authChecker = {};
 
-authChecker.admin = async function(req, res, next) {
+authChecker.admin = async function (req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -29,7 +29,7 @@ authChecker.admin = async function(req, res, next) {
   }
 };
 
-authChecker.academy = async function(req, res, next) {
+authChecker.academy = async function (req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -54,7 +54,7 @@ authChecker.academy = async function(req, res, next) {
   }
 };
 
-authChecker.player = async function(req, res, next) {
+authChecker.player = async function (req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -79,7 +79,55 @@ authChecker.player = async function(req, res, next) {
   }
 };
 
-authChecker.user = async function(req, res, next) {
+authChecker.manager = async function (req, res, next) {
+  try {
+    if (!req.header("Authorization")) throw 1500;
+    const token = req.header("Authorization");
+
+    let payload = await jwtService.verifyAccessToken(token);
+    req.user = payload;
+
+    let userExist = await DataServices.findOne(User, {
+      _id: utils.convertToObjectId(req.user.userId)
+    });
+
+    if (!userExist) throw 1002;
+    if (userExist.authType != 4) throw 1500;
+
+    req.AuthId = userExist._id;
+    req.AuthType = userExist.authType;
+
+    next();
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+authChecker.employ = async function (req, res, next) {
+  try {
+    if (!req.header("Authorization")) throw 1500;
+    const token = req.header("Authorization");
+
+    let payload = await jwtService.verifyAccessToken(token);
+    req.user = payload;
+
+    let userExist = await DataServices.findOne(User, {
+      _id: utils.convertToObjectId(req.user.userId)
+    });
+
+    if (!userExist) throw 1002;
+    if (userExist.authType != 5) throw 1500;
+
+    req.AuthId = userExist._id;
+    req.AuthType = userExist.authType;
+
+    next();
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+authChecker.user = async function (req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
