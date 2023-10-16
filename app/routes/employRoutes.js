@@ -8,5 +8,10 @@ const employController = require("../controllers/employController");
 // Auth routes
 route.post("/login", validator.loginSchema, userController.login);
 route.get("", verify.employ, employController.getProfile);
+route.get(
+  "/getReferredUsers",
+  verify.employ,
+  employController.getReferralAcademies
+);
 
 module.exports = route;

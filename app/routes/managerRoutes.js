@@ -26,4 +26,10 @@ route.put(
 );
 route.delete("/employ/:id", verify.manager, managerController.deleteEmployById);
 
+route.get(
+  "/employ/referrals/:id",
+  verify.manager,
+  managerController.getReferralAcademiesByEmpId
+);
+
 module.exports = route;
