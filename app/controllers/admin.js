@@ -12,6 +12,7 @@ const Partners = require("../models/partners");
 const SplashScreen = require("../models/splashScreen");
 const Subscription = require("../models/subscriptions");
 const DataServices = require("../Services/DataServices");
+const Referrals = require("../models/referrals");
 
 let adminController = {};
 
@@ -102,8 +103,105 @@ adminController.getAllUsers = async (req, res) => {
 
 adminController.getAllManagers = async (req, res) => {
   try {
-    const result = await dataServices.getData(Users, { authType: 4 });
-    if (result.length === 0) throw 25;
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { authType: 4 } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "managerId",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                email: 1,
+                mobile: 1,
+                academyName: 1,
+                address: 1,
+                city: 1,
+                pincode: 1,
+                state: 1,
+                isApproved: 1,
+                isSubscribed: 1,
+                subscribedDate: 1
+              }
+            }
+          ],
+          as: "employesData"
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          mobile: 1,
+          academyName: 1,
+          address: 1,
+          city: 1,
+          pincode: 1,
+          state: 1,
+          isApproved: 1,
+          isSubscribed: 1,
+          subscribedDate: 1,
+          employeesCount: { $size: "$employesData" },
+          employesData: 1
+        }
+      }
+    );
+
+    const result = await DataServices.dataAggregation(Users, pipeline);
+    return output.makeSuccessResponseWithMessage(res, 2, 200, result);
+  } catch (error) {
+    return output.makeErrorResponse(res, error);
+  }
+};
+
+adminController.getEmployeReferralsByEmpId = async (req, res) => {
+  try {
+    const userId = utils.convertToObjectId(req.params.id);
+
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { userId: userId } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "referredIds",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                email: 1,
+                mobile: 1,
+                academyName: 1,
+                address: 1,
+                city: 1,
+                pincode: 1,
+                state: 1,
+                isApproved: 1,
+                isSubscribed: 1,
+                subscribedDate: 1
+              }
+            }
+          ],
+          as: "referredUsers"
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          userId: 1,
+          code: 1,
+          referredUsers: 1
+        }
+      }
+    );
+
+    const result = await DataServices.dataAggregation(Referrals, pipeline);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
@@ -135,8 +233,65 @@ adminController.deleteManagerById = async (req, res) => {
 
 adminController.getAllEmploys = async (req, res) => {
   try {
-    const result = await dataServices.getData(Users, { authType: 5 });
-    if (result.length === 0) throw 25;
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { authType: 5 } },
+      {
+        $lookup: {
+          from: "referrals",
+          localField: "_id",
+          foreignField: "userId",
+          pipeline: [{ $project: { userId: 1, referredIds: 1 } }],
+          as: "referredData"
+        }
+      },
+      { $unwind: "$referredData" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "referredData.referredIds",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                email: 1,
+                mobile: 1,
+                academyName: 1,
+                address: 1,
+                city: 1,
+                pincode: 1,
+                state: 1,
+                isApproved: 1,
+                isSubscribed: 1,
+                subscribedDate: 1
+              }
+            }
+          ],
+          as: "refAcademiesData"
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          mobile: 1,
+          academyName: 1,
+          address: 1,
+          city: 1,
+          pincode: 1,
+          state: 1,
+          isApproved: 1,
+          isSubscribed: 1,
+          subscribedDate: 1,
+          refAcademiesData: 1,
+          refAcademiesCount: { $size: "$refAcademiesData" }
+        }
+      }
+    );
+
+    const result = await DataServices.dataAggregation(Users, pipeline);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);
@@ -145,10 +300,65 @@ adminController.getAllEmploys = async (req, res) => {
 
 adminController.getAllAcademies = async (req, res) => {
   try {
-    const result = await dataServices.getData(Users, {
-      authType: 2
-    });
-    if (result.length === 0) throw 25;
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { authType: 2 } },
+      {
+        $lookup: {
+          from: "referrals",
+          localField: "_id",
+          foreignField: "userId",
+          pipeline: [{ $project: { userId: 1, referredIds: 1 } }],
+          as: "referredData"
+        }
+      },
+      { $unwind: "$referredData" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "referredData.referredIds",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                email: 1,
+                mobile: 1,
+                academyName: 1,
+                address: 1,
+                city: 1,
+                pincode: 1,
+                state: 1,
+                isApproved: 1,
+                isSubscribed: 1,
+                subscribedDate: 1
+              }
+            }
+          ],
+          as: "refAcademiesData"
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          mobile: 1,
+          academyName: 1,
+          address: 1,
+          city: 1,
+          pincode: 1,
+          state: 1,
+          isApproved: 1,
+          isSubscribed: 1,
+          subscribedDate: 1,
+          refAcademiesData: 1,
+          refAcademiesCount: { $size: "$refAcademiesData" }
+        }
+      }
+    );
+
+    const result = await DataServices.dataAggregation(Users, pipeline);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);

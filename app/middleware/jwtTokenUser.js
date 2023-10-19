@@ -5,7 +5,7 @@ const DataServices = require("../Services/DataServices");
 const jwtService = require("./jwtHandler");
 let authChecker = {};
 
-authChecker.admin = async function (req, res, next) {
+authChecker.admin = async function(req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -29,7 +29,7 @@ authChecker.admin = async function (req, res, next) {
   }
 };
 
-authChecker.academy = async function (req, res, next) {
+authChecker.academy = async function(req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -54,7 +54,7 @@ authChecker.academy = async function (req, res, next) {
   }
 };
 
-authChecker.player = async function (req, res, next) {
+authChecker.player = async function(req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -79,7 +79,7 @@ authChecker.player = async function (req, res, next) {
   }
 };
 
-authChecker.manager = async function (req, res, next) {
+authChecker.manager = async function(req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -103,7 +103,7 @@ authChecker.manager = async function (req, res, next) {
   }
 };
 
-authChecker.employ = async function (req, res, next) {
+authChecker.employ = async function(req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");
@@ -127,7 +127,7 @@ authChecker.employ = async function (req, res, next) {
   }
 };
 
-authChecker.user = async function (req, res, next) {
+authChecker.user = async function(req, res, next) {
   try {
     if (!req.header("Authorization")) throw 1500;
     const token = req.header("Authorization");

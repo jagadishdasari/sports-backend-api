@@ -67,6 +67,7 @@ employController.getReferralAcademies = async (req, res) => {
                 name: 1,
                 email: 1,
                 mobile: 1,
+                academyName: 1,
                 address: 1,
                 city: 1,
                 pincode: 1,

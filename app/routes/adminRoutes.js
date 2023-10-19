@@ -15,7 +15,7 @@ route.post(
   adminController.adminRegister
 );
 route.get("/users", verify.admin, adminController.getAllUsers);
-route.get("/merchantusers", verify.admin, adminController.getAllAcademies);
+route.get("/allacademies", verify.admin, adminController.getAllAcademies);
 
 // manager Routes
 route.post("/manager/add", validator.managerSchema, userController.register);
@@ -28,6 +28,11 @@ route.put(
   adminController.managerUpdate
 );
 route.delete("/manager/:id", verify.admin, adminController.deleteManagerById);
+route.get(
+  "/manager/employ/referrals/:id",
+  verify.admin,
+  adminController.getEmployeReferralsByEmpId
+);
 
 // Employ Routes
 route.get("/employs", verify.admin, adminController.getAllEmploys);
