@@ -35,10 +35,11 @@ paymentFunctions.callStatus = function(Id) {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/MERCHANTUAT/${Id}`,
+        url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process
+          .env.PHONEPE_MER_ID_DEV}/${Id}`,
         headers: {
           "X-VERIFY": XVerify,
-          "X-MERCHANT-ID": "MERCHANTUAT",
+          "X-MERCHANT-ID": `${process.env.PHONEPE_MER_ID_DEV}`,
           "Content-Type": "application/json"
         },
         data: data
