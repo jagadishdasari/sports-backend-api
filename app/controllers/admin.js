@@ -127,6 +127,19 @@ adminController.getAllManagers = async (req, res) => {
                 isSubscribed: 1,
                 subscribedDate: 1
               }
+            },
+            {
+              $lookup: {
+                from: "referrals",
+                localField: "_id",
+                foreignField: "userId",
+                as: "referralsData"
+              }
+            },
+            {
+              $addFields: {
+                totalReferrals: { $size: "$referralsData" }
+              }
             }
           ],
           as: "employesData"
@@ -146,7 +159,8 @@ adminController.getAllManagers = async (req, res) => {
           isSubscribed: 1,
           subscribedDate: 1,
           employeesCount: { $size: "$employesData" },
-          employesData: 1
+          employesData: 1,
+          totalReferrals: { $sum: "$employesData.totalReferrals" }
         }
       }
     );
@@ -184,7 +198,8 @@ adminController.getEmployeReferralsByEmpId = async (req, res) => {
                 state: 1,
                 isApproved: 1,
                 isSubscribed: 1,
-                subscribedDate: 1
+                subscribedDate: 1,
+                cretaedAt: 1
               }
             }
           ],

@@ -75,15 +75,36 @@ managerController.getAllEmploys = async (req, res) => {
         $unwind: "$referralData"
       },
       {
+        $group: {
+          _id: {
+            userId: "$_id",
+            name: "$name",
+            email: "$email",
+            mobile: "$mobile",
+            address: "$address",
+            city: "$city",
+            pincode: "$pincode",
+            state: "$state",
+            code: "$referralData.code",
+            createdAt: "$createdAt"
+          },
+          referralsCount: { $sum: 1 }
+        }
+      },
+      {
         $project: {
-          name: 1,
-          email: 1,
-          mobile: 1,
-          address: 1,
-          city: 1,
-          pincode: 1,
-          state: 1,
-          code: "$referralData.code"
+          _id: 0,
+          userId: "$_id.userId",
+          name: "$_id.name",
+          email: "$_id.email",
+          mobile: "$_id.mobile",
+          address: "$_id.address",
+          city: "$_id.city",
+          pincode: "$_id.pincode",
+          state: "$_id.state",
+          code: "$_id.code",
+          createdAt: "$_id.createdAt",
+          referralsCount: 1
         }
       }
     );

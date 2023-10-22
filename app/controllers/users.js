@@ -143,7 +143,23 @@ userController.verifyRefCode = async (req, res) => {
 userController.getUser = async (req, res) => {
   try {
     const userId = utils.convertToObjectId(req.AuthId);
-    const result = await dataServices.findOne(Users, { _id: userId });
+
+    let pipeline = [];
+
+    pipeline.push(
+      { $match: { _id: userId } },
+      {
+        $lookup: {
+          from: "referrals",
+          localField: "_id",
+          foreignField: "userId",
+          pipeline: [{ $project: { userId: 1, code: 1 } }],
+          as: "referralData"
+        }
+      }
+    );
+
+    const result = await dataServices.dataAggregation(Users, pipeline);
     return output.makeSuccessResponseWithMessage(res, 2, 200, result);
   } catch (error) {
     return output.makeErrorResponse(res, error);

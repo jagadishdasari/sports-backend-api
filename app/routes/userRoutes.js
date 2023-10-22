@@ -33,7 +33,7 @@ route.post(
   "/upload",
   upload.oneFile("image"),
   s3Upload.uploadSingleMediaToS3("image"),
-  function (req, res) {
+  function(req, res) {
     output.makeSuccessResponseWithMessage(res, 2, 200, req.body.location);
   }
 );
@@ -71,5 +71,12 @@ route.get("/partners", userController.getPartners);
 route.get("/splashscreen", userController.getSplashScreens);
 
 route.get("/getPlayersByAcademyId/:id", userController.getPlayersByAcademyId);
+
+// common Api
+route.get(
+  "/getReferralsById/:id",
+  verify.user,
+  adminController.getEmployeReferralsByEmpId
+);
 
 module.exports = route;
