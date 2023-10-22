@@ -153,7 +153,7 @@ userController.getUser = async (req, res) => {
           from: "referrals",
           localField: "_id",
           foreignField: "userId",
-          pipeline: [{ $project: { userId: 1, code: 1 } }],
+          pipeline: [{ $project: { userId: 1, code: 1, referredIds: 1 } }],
           as: "referralData"
         }
       }

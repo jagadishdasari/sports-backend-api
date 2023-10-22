@@ -74,7 +74,8 @@ employController.getReferralAcademies = async (req, res) => {
                 state: 1,
                 isApproved: 1,
                 isSubscribed: 1,
-                subscribedDate: 1
+                subscribedDate: 1,
+                createdAt: 1
               }
             }
           ],

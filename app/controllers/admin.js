@@ -288,6 +288,26 @@ adminController.getAllEmploys = async (req, res) => {
         }
       },
       {
+        $lookup: {
+          from: "users",
+          localField: "managerId",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                email: 1,
+                mobile: 1
+              }
+            }
+          ],
+          as: "managerData"
+        }
+      },
+      {
+        $unwind: "$managerData"
+      },
+      {
         $project: {
           name: 1,
           email: 1,
@@ -301,7 +321,8 @@ adminController.getAllEmploys = async (req, res) => {
           isSubscribed: 1,
           subscribedDate: 1,
           refAcademiesData: 1,
-          refAcademiesCount: { $size: "$refAcademiesData" }
+          refAcademiesCount: { $size: "$refAcademiesData" },
+          managerData: 1
         }
       }
     );
