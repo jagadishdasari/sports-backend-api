@@ -133,12 +133,25 @@ adminController.getAllManagers = async (req, res) => {
                 from: "referrals",
                 localField: "_id",
                 foreignField: "userId",
+                pipeline: [
+                  {
+                    $project: {
+                      _id: 1,
+                      userId: 1,
+                      referredIds: 1,
+                      code: 1
+                    }
+                  }
+                ],
                 as: "referralsData"
               }
             },
             {
+              $unwind: "$referralsData"
+            },
+            {
               $addFields: {
-                totalReferrals: { $size: "$referralsData" }
+                totalReferrals: { $size: "$referralsData.referredIds" }
               }
             }
           ],
