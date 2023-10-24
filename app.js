@@ -38,7 +38,7 @@ app.use("/api/user", require("./app/routes/userRoutes"));
 app.use("/img", express.static(path.join(__dirname, "app/img")));
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.status(404);
 
   // respond with html page

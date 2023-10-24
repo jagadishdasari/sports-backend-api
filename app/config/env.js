@@ -27,11 +27,11 @@ module.exports = () => {
       };
     default:
       return {
-        MONGODB: constants.MONGODB.DEV.URL,
+        MONGODB: constants.MONGODB.LIVE.URL,
         PORT: 3001,
-        JWTOKEN: constants.JWTOKENDEV,
+        JWTOKEN: constants.JWTOKENLIVE,
         EXPIRY: constants.key.tokenExpiry,
-        BASEURL: constants.BASE_URL_LOCAL
+        BASEURL: constants.BASE_URL_LIVE
       };
   }
 };

@@ -1,3 +1,9 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
+const userName = process.env.MONGOUSERNAME;
+const password = process.env.PASSWORD;
+
 const globalConstants = {
   EMAIL: "test@gmail",
   JWTOKENLOCAL: "fax42c62-g215-4dc1-ad2d-sa1f32kk1w22",
@@ -12,6 +18,7 @@ const globalConstants = {
   BASE_URL_LOCAL: "http://16.170.162.43/",
   BASE_URL_DEV: "http://16.170.162.43/",
   BASE_URL_STG: "",
+  BASE_URL_LIVE: "https://kredangan.com",
 
   MONGODB: {
     LOCALHOST: {
@@ -22,7 +29,7 @@ const globalConstants = {
         "mongodb+srv://admin:Hari%404858@cluster0.nnkx8eo.mongodb.net/sports?retryWrites=true&w=majority"
     },
     LIVE: {
-      URL: "mongodb://localhost:27017"
+      URL: `mongodb+srv://${userName}:${password}@cluster0.mydbx0m.mongodb.net/kredangan?retryWrites=true&w=majority`
     },
     STAGING: {
       URL: "mongodb://localhost:27017"
