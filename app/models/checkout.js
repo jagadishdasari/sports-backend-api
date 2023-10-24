@@ -15,6 +15,10 @@ const schema = mongoose.Schema(
       type: String,
       required: true
     },
+    merTxnId: {
+      type: Number,
+      required: true
+    },
     amount: {
       type: String,
       required: true

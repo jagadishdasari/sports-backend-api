@@ -10,7 +10,7 @@ paymentFunctions.checkout = function(Request, XVerify) {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+        url: "https://api.phonepe.com/apis/hermes/pg/v1/pay",
         headers: {
           "X-VERIFY": XVerify,
           "Content-Type": "application/json"
@@ -18,7 +18,6 @@ paymentFunctions.checkout = function(Request, XVerify) {
         data: data
       };
       const result = await axios.request(config);
-      console.log(result, "result");
       resolve(JSON.stringify(result.data));
     } catch (error) {
       console.error("Error:", error.message);
@@ -35,11 +34,11 @@ paymentFunctions.callStatus = function(Id) {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: `https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status/${process
-          .env.PHONEPE_MER_ID_DEV}/${Id}`,
+        url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${process.env
+          .MERCHANT_ID}/${Id}`,
         headers: {
           "X-VERIFY": XVerify,
-          "X-MERCHANT-ID": `${process.env.PHONEPE_MER_ID_DEV}`,
+          "X-MERCHANT-ID": `${process.env.MERCHANT_ID}`,
           "Content-Type": "application/json"
         },
         data: data

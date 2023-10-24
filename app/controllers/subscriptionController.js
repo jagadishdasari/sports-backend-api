@@ -5,6 +5,7 @@ const DataServices = require("../Services/DataServices");
 const Users = require("../models/users");
 const Checkout = require("../models/checkout");
 const Subscription = require("../models/subscriptions");
+const TransactionIds = require("../models/transactionIds");
 
 let subscribeController = {};
 
@@ -22,8 +23,8 @@ subscribeController.checkout = async (req, res) => {
     const gstAmount = Number(amount * gstPercentage) / 100;
 
     data.amount = Number(amount + parseFloat(gstAmount.toFixed(0))) * 100;
-    data.merchantId = process.env.PHONEPE_MER_ID_DEV;
-    data.merchantTransactionId = data.subscriptionId;
+    data.merchantId = process.env.MERCHANT_ID;
+    data.merchantTransactionId = utils.generateTransactionId(13);
     data.merchantOrderId = utils.generateOrderId(9);
     data.merchantUserId = req.AuthId;
     data.message = `payment for order placed ${data.merchantOrderId}`;
@@ -41,6 +42,12 @@ subscribeController.checkout = async (req, res) => {
 
     const result = await paymentFunctions.checkout(request, XVerify);
 
+    if (result) {
+      const transactionData = await DataServices.createData(TransactionIds, {
+        transactionId: data.merchantTransactionId,
+        subscriptionId: data.subscriptionId
+      });
+    }
     return output.makeSuccessResponseWithMessage(
       res,
       2,
@@ -59,8 +66,12 @@ subscribeController.callStatus = async (req, res) => {
     const currentDate = new Date();
     const utcDateAsString = currentDate.toUTCString();
 
+    const transactionData = await DataServices.findOne(TransactionIds, {
+      transactionId: Id
+    });
+
     const subscriptionData = await DataServices.findOne(Subscription, {
-      _id: utils.convertToObjectId(Id)
+      _id: transactionData.subscriptionId
     });
 
     const subscrDate = new Date(currentDate);
@@ -86,7 +97,8 @@ subscribeController.callStatus = async (req, res) => {
     if (objToSend.status) {
       let data = {};
       data.userId = req.AuthId;
-      data.subscriptionId = objToSend.merchantTxnId;
+      data.subscriptionId = transactionData.subscriptionId;
+      data.merTxnId = objToSend.merchantTxnId;
       data.transactionId = objToSend.txnId;
       data.amount = objToSend.amount;
       data.subscriptionDate = utcDateAsString;
@@ -103,12 +115,7 @@ subscribeController.callStatus = async (req, res) => {
       await DataServices.updateData(Users, criteria, dataToSet);
     }
 
-    return output.makeSuccessResponseWithMessage(
-      res,
-      2,
-      200,
-      subscriptionExpiryDate
-    );
+    return output.makeSuccessResponseWithMessage(res, 2, 200, objToSend);
   } catch (error) {
     return output.makeErrorResponse(res, error);
   }
