@@ -84,8 +84,19 @@ subscribeController.callStatus = async (req, res) => {
     const response = await paymentFunctions.callStatus(Id);
     const result = JSON.parse(response);
 
+    console.log(result, "call status result");
+
+    if (result.code === "PAYMENT_PENDING") {
+      return output.makeSuccessResponseWithMessage(res, 2, 200, {
+        pending: true
+      });
+    }
+
+    if (!result.code === "PAYMENT_SUCCESS") throw 31;
+
     const objToSend = {
       status: result.success,
+      pending: false,
       code: result.code,
       message: result.message,
       merchantTxnId: result.data.merchantTransactionId,
