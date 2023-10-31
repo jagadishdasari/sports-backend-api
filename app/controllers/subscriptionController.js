@@ -87,7 +87,7 @@ subscribeController.callStatus = async (req, res) => {
     console.log(result, "call status result");
 
     if (result.code === "PAYMENT_PENDING") {
-      return output.makeSuccessResponseWithMessage(res, 2, 200, {
+      return output.makeSuccessResponseWithMessage(res, 2, 500, {
         pending: true
       });
     }
