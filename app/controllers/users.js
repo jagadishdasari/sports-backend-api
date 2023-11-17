@@ -277,7 +277,11 @@ userController.getAcademyProfiles = async (req, res) => {
           distanceMultiplier: 1 / unitValue,
           key: "location",
           spherical: true,
-          query: { authType: 2, isApproved: true, profileStatus: 2 }
+          query: {
+            authType: 2,
+            isApproved: true,
+            $or: [{ profileStatus: 2 }, { profileStatus: 3 }]
+          }
         }
       },
       {
